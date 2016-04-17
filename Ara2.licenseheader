@@ -1,0 +1,6 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .js
+// Copyright (c) 2010-%CurrentYear%, Rafael Leonel Pontani. All rights reserved.
+// For licensing, see LICENSE.md or http://www.araframework.com.br/license
+// This file is part of AraFramework project details visit http://www.arafrework.com.br
+// AraFramework - Rafael Leonel Pontani, %CurrentYear%-%CurrentMonth%-%CurrentDay%

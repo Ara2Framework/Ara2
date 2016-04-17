@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{83FED7F3-8938-48DE-AAD4-BF77FB77F264}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ara2</RootNamespace>
+    <AssemblyName>Ara2</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AraDev\AraDevAtributes.cs" />
+    <Compile Include="AraDev\AraDevProperty.cs" />
+    <Compile Include="AraDev\AraCustomEditor.cs" />
+    <Compile Include="AraDev\IAraDev.cs" />
+    <Compile Include="AraKeyboard\AraKeyboard.cs" />
+    <Compile Include="AraPageMain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AraTools\AraTools.cs" />
+    <Compile Include="AraTools\AraToolsInternalStatic.cs" />
+    <Compile Include="AraTools\ClassStreamMD5.cs" />
+    <Compile Include="AraTools\DynamicJson.cs" />
+    <Compile Include="AraTools\XmlConfig_ConfigSetting.cs" />
+    <Compile Include="AraTools\XmlConfig.cs" />
+    <Compile Include="Atributes.cs" />
+    <Compile Include="AraComponentBase\AraAnchor.cs" />
+    <Compile Include="AraComponentBase\AraComponentEvent.cs" />
+    <Compile Include="AraComponentBase\AraComponentEventKey.cs" />
+    <Compile Include="AraComponentBase\AraComponentVisual.cs" />
+    <Compile Include="AraComponentBase\AraComponentVisualAnchor.cs" />
+    <Compile Include="AraComponentBase\AraComponentVisualAnchorConteiner.cs" />
+    <Compile Include="AraComponentBase\AraComponentVisualConteiner.cs" />
+    <Compile Include="AraComponentBase\AraConteiner.cs" />
+    <Compile Include="AraComponentBase\AraDelegates.cs" />
+    <Compile Include="AraComponentBase\AraDistance.cs" />
+    <Compile Include="AraComponentBase\AraDraggable.cs" />
+    <Compile Include="AraComponentBase\AraEvent.cs" />
+    <Compile Include="AraComponentBase\AraObject.cs" />
+    <Compile Include="AraComponentBase\AraObjectClienteServer.cs" />
+    <Compile Include="AraComponentBase\AraObjectInstance.cs" />
+    <Compile Include="AraComponentBase\AraResizable.cs" />
+    <Compile Include="AraComponentBase\AraScrollBar\AraScrollBar.cs" />
+    <Compile Include="AraComponentBase\AraSelectable.cs" />
+    <Compile Include="AraComponentBase\Interfaces.cs" />
+    <Compile Include="AraComponentBase\Layout\AraLayout.cs" />
+    <Compile Include="AraComponentBase\Layout\AraLayouts.cs" />
+    <Compile Include="AraComponentBase\Layout\LayoutCurrentConverter.cs" />
+    <Compile Include="Ara2ComponentsServer\Script\AraScript.cs" />
+    <Compile Include="Ara2ComponentsServer\WindowMain\IAraWindowMain.cs" />
+    <Compile Include="Ara2ComponentsServer\WindowMain\IDivModal.cs" />
+    <Compile Include="Ara2ComponentsServer\WindowMain\WindowMain.cs" />
+    <Compile Include="CustomBinarySerializer.cs" />
+    <Content Include="Ara2\Files\AraKernel\ClassAra.js" />
+    <Compile Include="Exception\ExceptionExtensions.cs" />
+    <Compile Include="Other\CustomerHttpCapabilitiesProvider.cs" />
+    <Content Include="Ara2\Files\AraKernel\ClassAraHttps.js" />
+    <Compile Include="Log\AraLog.cs" />
+    <Compile Include="MemoryArea\AraMemoryAreaPool.cs" />
+    <Compile Include="MemoryArea\AraMemoryAreaPoolFile.cs" />
+    <Compile Include="MemoryArea\IAraMemoryArea.cs" />
+    <Compile Include="MemoryArea\AraMemoryAreaFile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session\SessionAplications.cs" />
+    <Compile Include="Session\SessionAplication.cs" />
+    <Compile Include="Session\Session.cs" />
+    <Compile Include="Session\SessionCsss.cs" />
+    <Compile Include="Session\SessionJSs.cs" />
+    <Compile Include="Session\SessionObject.cs" />
+    <Compile Include="Session\Sessions.cs" />
+    <Compile Include="Tick\Script.cs" />
+    <Compile Include="Tick\Tick.cs" />
+    <Content Include="NuGet\NuGet.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Ara2\Files\AraKernel\ClassAraTick.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Ara2\Components\WindowMain\WindowMain.js" />
+    <Content Include="Ara2\Files\Carregando.gif" />
+    <Content Include="Ara2\Files\jQuery\css\AraJQuery.css" />
+    <Content Include="Ara2\Files\jQuery\css\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Ara2\Files\AraKernel\ClassAraClass.js" />
+    <Content Include="Ara2\Files\AraKernel\other\jquery_selectboxes.js" />
+    <Content Include="Ara2\Files\AraKernel\other\json2.js" />
+    <Content Include="Ara2\Files\AraKernel\ClassAraGenVarSend.js" />
+    <Content Include="Ara2\Files\AraKernel\ClassAraAnchor.js" />
+    <Content Include="Ara2\Files\AraKernel\ClassAraComponent.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Ara2\Files\jQuery\jquery_ui_touch-punch.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Ara2\Files\AraKernel\ClassAraTools.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_50_3baae3_1x400.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_2694e8_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\cupertino_1_11\jquery-ui_min.css" />
+    <Content Include="Ara2\Files\jQuery\jquery-ui-1_11_2_custom_min.js" />
+    <Content Include="Ara2\Files\jQuery\jquery-1_11_1_min.js" />
+    <Content Include="Ara2\Files\jQuery\jquery-cookie.js" />
+    <None Include="Ara2.licenseheader" />
+    <Content Include="Ara2\CREDITS.md" />
+    <Content Include="Ara2\LICENSE.md" />
+    <None Include="CREDITS.md" />
+    <None Include="Ara2\Files\AraKernel\other\ie7\blank.gif" />
+    <Content Include="Ara2\Files\BrowserNotSupported\BrowserNotSupported.html" />
+    <Content Include="Ara2\Files\AraKernel\other\ie7\ie7-squish.js" />
+    <Content Include="Ara2\Files\AraKernel\other\ie7\IE7.js" />
+    <Content Include="Ara2\Files\AraKernel\other\ie7\IE8.js" />
+    <Content Include="Ara2\Files\AraKernel\other\ie7\IE9.js" />
+    <None Include="Ara2\Files\AraKernel\other\ie7\src\blank.gif" />
+    <None Include="Ara2\Files\AraKernel\other\ie7\src\ie7-squish.js" />
+    <None Include="Ara2\Files\AraKernel\other\ie7\src\IE7.js" />
+    <None Include="Ara2\Files\AraKernel\other\ie7\src\IE8.js" />
+    <None Include="Ara2\Files\AraKernel\other\ie7\src\IE9.js" />
+    <Content Include="Ara2\Files\Kiosk\AraKiosk.html" />
+    <Content Include="Ara2\Files\AraKernel\other\jquery_printElement.js" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_222222_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Ara2\Files\jQuery\css\ui_lightness\jquery-ui-1_9_2_custom.css" />
+    <Content Include="Ara2\Files\jQuery\jquery-migrate-1_2_1_min.js" />
+    <Content Include="Ara2\Files\JQueryScoolBar\jquery_nicescroll.js" />
+    <Content Include="Ara2\Files\AraScrollBar\AraScrollBar.js" />
+    <None Include="LICENSE.md" />
+    <None Include="NuGet\Ara2.nuspec" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="@(Targets->'%(Version)')" />
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
+    <PostBuildEvent>cd $(ProjectDir)Nuget
+del *.nupkg
+nuget.exe pack $(ProjectName).nuspec -version @(VersionNumber)</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <None Include="Ara2\Files\AraKernel\other\ie7\LICENSE" />
+  </ItemGroup>
+  <ItemGroup />
+</Project>

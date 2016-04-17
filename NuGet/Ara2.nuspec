@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+        <id>Ara2</id>
+        <version>$version$</version>
+        <title>Ara2</title>
+        <authors>rafaelleonel</authors>
+        <owners>rafaelleonel</owners>
+        <licenseUrl>http://www.araframework.com.br/license</licenseUrl>
+        <projectUrl>http://www.araframework.com.br</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Componente do AraFramework</description>
+        <copyright>Copyright © 2016</copyright>
+        <language>pt-BR</language>
+    </metadata>	
+    <files>
+        <file src="..\Ara2\Components\WindowMain\WindowMain.js" target="content\Ara2\Components\WindowMain\WindowMain.js" />
+        <file src="..\Ara2\Files\AraKernel\other\ie7\ie7-squish.js" target="content\Ara2\Files\AraKernel\other\ie7\ie7-squish.js" />
+        <file src="..\Ara2\Files\AraKernel\other\ie7\IE7.js" target="content\Ara2\Files\AraKernel\other\ie7\IE7.js" />
+        <file src="..\Ara2\Files\AraKernel\other\ie7\IE8.js" target="content\Ara2\Files\AraKernel\other\ie7\IE8.js" />
+        <file src="..\Ara2\Files\AraKernel\other\ie7\IE9.js" target="content\Ara2\Files\AraKernel\other\ie7\IE9.js" />
+        <file src="..\Ara2\Files\AraKernel\other\jquery_printElement.js" target="content\Ara2\Files\AraKernel\other\jquery_printElement.js" />
+        <file src="..\Ara2\Files\AraKernel\other\jquery_selectboxes.js" target="content\Ara2\Files\AraKernel\other\jquery_selectboxes.js" />
+        <file src="..\Ara2\Files\AraKernel\other\json2.js" target="content\Ara2\Files\AraKernel\other\json2.js" />
+        <file src="..\Ara2\Files\AraKernel\ClassAra.js" target="content\Ara2\Files\AraKernel\ClassAra.js" />
+        <file src="..\Ara2\Files\AraKernel\ClassAraAnchor.js" target="content\Ara2\Files\AraKernel\ClassAraAnchor.js" />
+        <file src="..\Ara2\Files\AraKernel\ClassAraClass.js" target="content\Ara2\Files\AraKernel\ClassAraClass.js" />
+        <file src="..\Ara2\Files\AraKernel\ClassAraComponent.js" target="content\Ara2\Files\AraKernel\ClassAraComponent.js" />
+        <file src="..\Ara2\Files\AraKernel\ClassAraGenVarSend.js" target="content\Ara2\Files\AraKernel\ClassAraGenVarSend.js" />
+        <file src="..\Ara2\Files\AraKernel\ClassAraHttps.js" target="content\Ara2\Files\AraKernel\ClassAraHttps.js" />
+        <file src="..\Ara2\Files\AraKernel\ClassAraTick.js" target="content\Ara2\Files\AraKernel\ClassAraTick.js" />
+        <file src="..\Ara2\Files\AraKernel\ClassAraTools.js" target="content\Ara2\Files\AraKernel\ClassAraTools.js" />
+        <file src="..\Ara2\Files\BrowserNotSupported\BrowserNotSupported.html" target="content\Ara2\Files\BrowserNotSupported\BrowserNotSupported.html" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_flat_15_cd0a0a_40x100.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_100_e4f1fb_1x400.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_50_3baae3_1x400.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_50_3baae3_1x400.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_80_d7ebf9_1x400.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-hard_70_000000_1x100.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-soft_100_deedf7_1x100.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_2694e8_256x240.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_2694e8_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_2e83ff_256x240.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_2e83ff_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_3d80b3_256x240.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_3d80b3_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_72a7cf_256x240.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_72a7cf_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_ffffff_256x240.png" target="content\Ara2\Files\jQuery\css\cupertino_1_11\images\ui-icons_ffffff_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\cupertino_1_11\jquery-ui_min.css" target="content\Ara2\Files\jQuery\css\cupertino_1_11\jquery-ui_min.css" />
+        <file src="..\Ara2\Files\jQuery\css\images\ui-anim_basic_16x16.gif" target="content\Ara2\Files\jQuery\css\images\ui-anim_basic_16x16.gif" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_flat_10_000000_40x100.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_flat_10_000000_40x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_100_f6f6f6_1x400.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_100_fdf5ce_1x400.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_65_ffffff_1x400.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_glass_65_ffffff_1x400.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_gloss-wave_35_f6a828_500x100.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_222222_256x240.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_222222_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_228ef1_256x240.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_228ef1_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ef8c08_256x240.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ef8c08_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ffd27a_256x240.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ffd27a_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ffffff_256x240.png" target="content\Ara2\Files\jQuery\css\ui_lightness\images\ui-icons_ffffff_256x240.png" />
+        <file src="..\Ara2\Files\jQuery\css\ui_lightness\jquery-ui-1_9_2_custom.css" target="content\Ara2\Files\jQuery\css\ui_lightness\jquery-ui-1_9_2_custom.css" />
+        <file src="..\Ara2\Files\jQuery\css\AraJQuery.css" target="content\Ara2\Files\jQuery\css\AraJQuery.css" />
+        <file src="..\Ara2\Files\jQuery\jquery-1_11_1_min.js" target="content\Ara2\Files\jQuery\jquery-1_11_1_min.js" />
+        <file src="..\Ara2\Files\jQuery\jquery-cookie.js" target="content\Ara2\Files\jQuery\jquery-cookie.js" />
+        <file src="..\Ara2\Files\jQuery\jquery-migrate-1_2_1_min.js" target="content\Ara2\Files\jQuery\jquery-migrate-1_2_1_min.js" />
+        <file src="..\Ara2\Files\jQuery\jquery-ui-1_11_2_custom_min.js" target="content\Ara2\Files\jQuery\jquery-ui-1_11_2_custom_min.js" />
+        <file src="..\Ara2\Files\jQuery\jquery_ui_touch-punch.js" target="content\Ara2\Files\jQuery\jquery_ui_touch-punch.js" />
+        <file src="..\Ara2\Files\JQueryScoolBar\jquery_nicescroll.js" target="content\Ara2\Files\JQueryScoolBar\jquery_nicescroll.js" />
+        <file src="..\Ara2\Files\Kiosk\AraKiosk.html" target="content\Ara2\Files\Kiosk\AraKiosk.html" />
+        <file src="..\Ara2\Files\Carregando.gif" target="content\Ara2\Files\Carregando.gif" />
+        <file src="..\Ara2\CREDITS.md" target="content\Ara2\CREDITS.md" />
+        <file src="..\Ara2\LICENSE.md" target="content\Ara2\LICENSE.md" />
+        <file src="..\Ara2\Files\AraScrollBar\AraScrollBar.js" target="content\Ara2\Files\AraScrollBar\AraScrollBar.js" />
+        <file src="..\bin\Release\Ara2.dll" target="lib\net40\Ara2.dll" />
+    </files>
+</package>

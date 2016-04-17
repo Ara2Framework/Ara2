@@ -1,0 +1,12 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/bin
+*.nupkg
+/obj
+*.suo
+/.vs/config
+/Ara2.ToolsExtension/Ara2.ToolsExtension/bin/Debug
+/Ara2.ToolsExtension/Ara2.ToolsExtension/obj
+*.user
