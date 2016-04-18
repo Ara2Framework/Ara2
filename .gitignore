@@ -7,6 +7,6 @@
 /obj
 *.suo
 /.vs/config
-/Ara2.ToolsExtension/Ara2.ToolsExtension/bin/Debug
+/Ara2.ToolsExtension/Ara2.ToolsExtension/bin
 /Ara2.ToolsExtension/Ara2.ToolsExtension/obj
 *.user

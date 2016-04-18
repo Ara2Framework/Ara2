@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ara2.ToolsExtension</RootNamespace>
     <AssemblyName>Ara2.ToolsExtension</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ara2, Version=1.2.6.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ara2.1.2.6.2\lib\net40\Ara2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ara2.AraButton, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ara2.AraButton.1.0.0.2\lib\net40\Ara2.AraButton.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ara2.AraIFrame, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ara2.AraIFrame.1.0.0.0\lib\net40\Ara2.AraIFrame.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ara2.AraLabel, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ara2.AraLabel.1.0.0.1\lib\net40\Ara2.AraLabel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ara2.AraWindow, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ara2.AraWindow.1.0.0.3\lib\net40\Ara2.AraWindow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,14 +69,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FrmAraToolsAlert\FrmAraToolsAlert.AraDesign.json" />
+    <None Include="Nuget\Ara2.ToolsExtension.nuspec" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ara2.csproj">
-      <Project>{83fed7f3-8938-48de-aad4-bf77fb77f264}</Project>
-      <Name>Ara2</Name>
-    </ProjectReference>
+    <Folder Include="Ara2\Components\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Nuget\NuGet.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="@(Targets->'%(Version)')" />
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
+    <PostBuildEvent>cd $(ProjectDir)Nuget
+del *.nupkg
+nuget.exe pack $(SolutionName).nuspec -version @(VersionNumber)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

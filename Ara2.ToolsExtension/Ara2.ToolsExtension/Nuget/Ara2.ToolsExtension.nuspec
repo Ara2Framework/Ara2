@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Ara2.ToolsExtension</id>
+        <version>$version$</version>
+        <title>Ara2.ToolsExtension</title>
+        <authors>rafaelleonel</authors>
+        <owners>rafaelleonel</owners>
+        <licenseUrl>http://www.araframework.com.br/license</licenseUrl>
+        <projectUrl>http://www.araframework.com.br</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Componente do AraFramework</description>
+        <copyright>Copyright ©  2016</copyright>
+        <language>pt-BR</language>
+        <dependencies>
+            <dependency id="Ara2" version="1.2.6" />
+            <dependency id="Ara2.AraButton" version="1.0.0.2"/>
+            <dependency id="Ara2.AraIFrame" version="1.0.0.0" />
+            <dependency id="Ara2.AraLabel" version="1.0.0.1" />
+            <dependency id="Ara2.AraWindow" version="1.0.0.3" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\bin\Release\Ara2.ToolsExtension.dll" target="lib\net40\Ara2.ToolsExtension.dll" />
+    </files>
+</package>
