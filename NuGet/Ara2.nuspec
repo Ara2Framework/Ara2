@@ -10,7 +10,7 @@
         <projectUrl>http://www.araframework.com.br</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Componente do AraFramework</description>
-        <copyright>Copyright © 2016</copyright>
+        <copyright>Copyright (c) 2010-2016, Rafael Leonel Pontani. All rights reserved.</copyright>
         <language>pt-BR</language>
     </metadata>	
     <files>
