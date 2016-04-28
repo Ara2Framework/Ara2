@@ -106,6 +106,7 @@ namespace Ara2
             _Objects.Clear();
         }
 
+        #region Aplication
         AraObjectInstance<SessionAplications> _Aplications = new AraObjectInstance<SessionAplications>();
         public SessionAplications Aplications
         {
@@ -117,7 +118,9 @@ namespace Ara2
                 return _Aplications.Object;
             }
         }
+        #endregion
 
+        #region JavaScript
         AraObjectInstance<SessionJSs> _SessionJSs = new AraObjectInstance<SessionJSs>();
         public SessionJSs JSs
         {
@@ -134,7 +137,9 @@ namespace Ara2
         {
             JSs.AddJs(vJs);
         }
+        #endregion
 
+        #region CSS
         AraObjectInstance<SessionCsss> _SessionCsss = new AraObjectInstance<SessionCsss>();
         public SessionCsss Csss
         {
@@ -151,8 +156,8 @@ namespace Ara2
         {
             Csss.AddCss(vJs);
         }
+        #endregion
 
-        
 
         #region Objects
 

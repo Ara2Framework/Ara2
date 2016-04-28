@@ -30,7 +30,7 @@ namespace Ara2
             if (!CssLoad.Exists(a => a == vFile))
             {
                 Tick vTick = Tick.GetTick();
-                vTick.Script.Send("Ara.AddCss('" + AraTools.StringToStringJS(vFile) + "');\n");
+                vTick.Script.Send("Ara.AddCss('" + AraTools.StringToStringJS(vTick.AraPageMain.GetUrlRedirectFiles(vFile)) + "');\n");
                 CssLoad.Add(vFile);
             }
         }

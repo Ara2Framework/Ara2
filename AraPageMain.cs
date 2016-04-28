@@ -122,6 +122,18 @@ namespace Ara2
                     throw new Exception("Error on DownloadForce '" + Request.Params["DownloadForce"] + "'\n " + erro.Message);
                 }
             }
+            else if (Request.Params["File"] != null && Request.Params["FileKey"] != null)
+            {
+                try
+                {
+                    SendFile(Request.Params["File"], Request.Params["FileKey"]);
+                    return;
+                }
+                catch (Exception erro)
+                {
+                    throw new Exception("Error on SendFile '" + Request.Params["File"] + "'\n " + erro.Message);
+                }
+            }
             else if (Request.Params["AraMemoryAreaCount"] != null)
             {
                 if (AraMemoryAreaCountKeyLoad==false)
@@ -573,7 +585,7 @@ namespace Ara2
             
         }
 
-        
+        #region OLD
 
         #region SendFileJS
         //public void SendFileJS(string vFile)
@@ -641,7 +653,7 @@ namespace Ara2
         //        if (AraClass == true)
         //            Response.Write("\n Ara.AraClass.EndLoadClass('" + Page.Request["Url"] + "'); \n");
 
-                
+
         //    }
         //    else
         //    {
@@ -655,116 +667,120 @@ namespace Ara2
 
         #region GZip
 
-        private  void PageAtivaGZip()
-        {
-            string AcceptEncoding = Request.Headers["Accept-Encoding"];
+        //private void PageAtivaGZip()
+        //{
+        //    string AcceptEncoding = Request.Headers["Accept-Encoding"];
 
-            if (!string.IsNullOrEmpty(AcceptEncoding) &&
-                     (AcceptEncoding.Contains("gzip") || AcceptEncoding.Contains("deflate")))
-            {
-                if (AcceptEncoding.Contains("gzip"))
-                {
-                    Response.Filter = new System.IO.Compression.GZipStream(Response.Filter,
-                                                System.IO.Compression.CompressionMode.Compress);
-                    Response.AppendHeader("Content-Encoding", "gzip");
-                }
-                else if (AcceptEncoding.Contains("deflate"))
-                {
-                    Response.Filter = new System.IO.Compression.DeflateStream(Response.Filter,
-                                                System.IO.Compression.CompressionMode.Compress);
-                    Response.AppendHeader("Content-Encoding", "deflate");
-                }
+        //    if (!string.IsNullOrEmpty(AcceptEncoding) &&
+        //             (AcceptEncoding.Contains("gzip") || AcceptEncoding.Contains("deflate")))
+        //    {
+        //        if (AcceptEncoding.Contains("gzip"))
+        //        {
+        //            Response.Filter = new System.IO.Compression.GZipStream(Response.Filter,
+        //                                        System.IO.Compression.CompressionMode.Compress);
+        //            Response.AppendHeader("Content-Encoding", "gzip");
+        //        }
+        //        else if (AcceptEncoding.Contains("deflate"))
+        //        {
+        //            Response.Filter = new System.IO.Compression.DeflateStream(Response.Filter,
+        //                                        System.IO.Compression.CompressionMode.Compress);
+        //            Response.AppendHeader("Content-Encoding", "deflate");
+        //        }
                 
-            }
-        }
+        //    }
+        //}
         #endregion
 
-        public void SendFile( string vFile)
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            Stream stream = asm.GetManifestResourceStream(vFile.Replace("/", ".").Replace("\\", "."));
+        #region SendFile
+        //public void SendFile( string vFile)
+        //{
+        //    Assembly asm = Assembly.GetExecutingAssembly();
+        //    Stream stream = asm.GetManifestResourceStream(vFile.Replace("/", ".").Replace("\\", "."));
 
-            if (stream != null)
-            {
-                string eTag = Request.Headers["If-None-Match"];
+        //    if (stream != null)
+        //    {
+        //        string eTag = Request.Headers["If-None-Match"];
 
-                if (string.IsNullOrEmpty(eTag))
-                {
-                    string vMD5 = AraToolsInternalStatic.GetMD5FileInternal(vFile, stream);
-                    Response.Cache.SetLastModified(DateTime.Now);
-                    Response.Cache.SetETag(vMD5);
-                }
-                else
-                {
-                    if (AraToolsInternalStatic.GetFileInternalByMD5(eTag) == vFile)
-                    {
-                        Response.Clear();
-                        Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
-                        Response.SuppressContent = true;
-                        return;
-                    }
-                }
+        //        if (string.IsNullOrEmpty(eTag))
+        //        {
+        //            string vMD5 = AraToolsInternalStatic.GetMD5FileInternal(vFile, stream);
+        //            Response.Cache.SetLastModified(DateTime.Now);
+        //            Response.Cache.SetETag(vMD5);
+        //        }
+        //        else
+        //        {
+        //            if (AraToolsInternalStatic.GetFileInternalByMD5(eTag) == vFile)
+        //            {
+        //                Response.Clear();
+        //                Response.StatusCode = (int)System.Net.HttpStatusCode.NotModified;
+        //                Response.SuppressContent = true;
+        //                return;
+        //            }
+        //        }
 
 
-                System.Text.ASCIIEncoding EncodingToString = new System.Text.ASCIIEncoding();
-                System.Text.UTF8Encoding EncodingToByte = new System.Text.UTF8Encoding();
+        //        System.Text.ASCIIEncoding EncodingToString = new System.Text.ASCIIEncoding();
+        //        System.Text.UTF8Encoding EncodingToByte = new System.Text.UTF8Encoding();
 
-                /*
-                string vPath = "";
-                if (vFile.LastIndexOf("/") > -1)
-                    vPath = Request.Path + "?GetFile=" + vFile.Substring(0, vFile.LastIndexOf("/") + 1);
-                */
-                string vPath = "?GetFile=" + vFile.Substring(0, vFile.LastIndexOf("/") + 1);
+        //        /*
+        //        string vPath = "";
+        //        if (vFile.LastIndexOf("/") > -1)
+        //            vPath = Request.Path + "?GetFile=" + vFile.Substring(0, vFile.LastIndexOf("/") + 1);
+        //        */
+        //        string vPath = "?GetFile=" + vFile.Substring(0, vFile.LastIndexOf("/") + 1);
 
-                string Estencao = vFile.Substring(vFile.LastIndexOf("."), vFile.Length - vFile.LastIndexOf(".")).ToLower();
+        //        string Estencao = vFile.Substring(vFile.LastIndexOf("."), vFile.Length - vFile.LastIndexOf(".")).ToLower();
 
-                if (AraToolsInternalStatic.ContextTypeDic.ContainsKey(Estencao.ToLower().Substring(1)))
-                    Response.ContentType = AraToolsInternalStatic.ContextTypeDic[Estencao.ToLower().Substring(1)];
-                else
-                    Response.ContentType = "text/plain";
+        //        if (AraToolsInternalStatic.ContextTypeDic.ContainsKey(Estencao.ToLower().Substring(1)))
+        //            Response.ContentType = AraToolsInternalStatic.ContextTypeDic[Estencao.ToLower().Substring(1)];
+        //        else
+        //            Response.ContentType = "text/plain";
 
-                Response.Cache.SetCacheability(System.Web.HttpCacheability.Public);
-                Response.BufferOutput = false;
+        //        Response.Cache.SetCacheability(System.Web.HttpCacheability.Public);
+        //        Response.BufferOutput = false;
 
-                const int buffersize = 1024 * 16;
-                var buffer = new byte[buffersize];
-                int count = stream.Read(buffer, 0, buffersize);
-                while (count > 0)
-                {
-                    switch (Estencao.ToLower())
-                    {
-                        case ".css":
-                        case ".js":
+        //        const int buffersize = 1024 * 16;
+        //        var buffer = new byte[buffersize];
+        //        int count = stream.Read(buffer, 0, buffersize);
+        //        while (count > 0)
+        //        {
+        //            switch (Estencao.ToLower())
+        //            {
+        //                case ".css":
+        //                case ".js":
 
-                            string vTmp1 = EncodingToString.GetString(buffer).Replace("$PATH$", vPath);
+        //                    string vTmp1 = EncodingToString.GetString(buffer).Replace("$PATH$", vPath);
 
-                            if (vTmp1 != EncodingToString.GetString(buffer))
-                            {
-                                if (buffersize >= vTmp1.Length)
-                                    buffer = EncodingToByte.GetBytes(vTmp1);
-                                else
-                                {
-                                    count += (vTmp1.Length - buffersize);
-                                    buffer = new byte[vTmp1.Length];
-                                    buffer = EncodingToByte.GetBytes(vTmp1);
-                                }
-                            }
-                            break;
-                    }
+        //                    if (vTmp1 != EncodingToString.GetString(buffer))
+        //                    {
+        //                        if (buffersize >= vTmp1.Length)
+        //                            buffer = EncodingToByte.GetBytes(vTmp1);
+        //                        else
+        //                        {
+        //                            count += (vTmp1.Length - buffersize);
+        //                            buffer = new byte[vTmp1.Length];
+        //                            buffer = EncodingToByte.GetBytes(vTmp1);
+        //                        }
+        //                    }
+        //                    break;
+        //            }
 
-                    Response.OutputStream.Write(buffer, 0, count);
-                    buffer = new byte[buffersize];
-                    count = stream.Read(buffer, 0, buffersize);
-                }
-            }
-            else
-            {
-                // Arquivo não encontrado.
-                Response.Clear();
-                Response.StatusCode = 404;
-                Response.End();
-            }
-        }
+        //            Response.OutputStream.Write(buffer, 0, count);
+        //            buffer = new byte[buffersize];
+        //            count = stream.Read(buffer, 0, buffersize);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Arquivo não encontrado.
+        //        Response.Clear();
+        //        Response.StatusCode = 404;
+        //        Response.End();
+        //    }
+        //}
+        #endregion
+
+        #endregion
 
         public void SendFileDownloadForce(string vFile)
         {
@@ -813,6 +829,105 @@ namespace Ara2
                 Response.StatusCode = 404;
                 Response.End();
             }
+        }
+
+        #region RandomString
+        private static Random random = new Random((int)DateTime.Now.Ticks);//thanks to McAden
+        private string RandomString(int size)
+        {
+            StringBuilder builder = new StringBuilder();
+            char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+
+            return builder.ToString();
+        }
+        #endregion
+
+        #region SendFile
+        static List<string> _KeySendFile = new List<string>();
+        public string GetKeySendFile()
+        {
+            string vRndKey = null;
+            lock (_KeySendFile)
+            {
+                vRndKey = RandomString(20);
+                while (_KeySendFile.Contains(vRndKey))
+                {
+                    System.Threading.Thread.Sleep(50);
+                    vRndKey = RandomString(20);
+                }
+                _KeySendFile.Add(vRndKey);
+            }
+            return vRndKey;
+        }
+
+        public void SendFile(string vFile,string vKey)
+        {
+            try
+            {
+                if (vFile.LastIndexOf("&") != -1)
+                    vFile = vFile.Substring(0, vFile.LastIndexOf("&"));
+
+                if (!File.Exists(vFile) || !_KeySendFile.Contains(vKey))
+                {
+                    // Arquivo não encontrado.
+                    Response.Clear();
+                    Response.StatusCode = 404;
+                    //Response.Write("ChaveEncontrada :" + (_KeySendFile.Contains(vKey)?"S":"N"));
+                    Response.End();
+                    return;
+                }
+                else
+                {
+                    Stream stream = new StreamReader(vFile).BaseStream;
+                    try
+                    {
+
+                        //Response.ContentType = "application/x-msdownload";
+                        string Estencao = vFile.Substring(vFile.LastIndexOf("."), vFile.Length - vFile.LastIndexOf(".")).ToLower();
+
+                        if (AraToolsInternalStatic.ContextTypeDic.ContainsKey(Estencao.ToLower().Substring(1)))
+                            Response.ContentType = AraToolsInternalStatic.ContextTypeDic[Estencao.ToLower().Substring(1)];
+                        else
+                            Response.ContentType = "application/x-msdownload";
+
+                        //Response.AddHeader("Content-Disposition", "attachment; filename=" + System.IO.Path.GetFileName(vFile));
+                        //Response.Cache.SetCacheability(HttpCacheability.Public);
+                        Response.BufferOutput = false;
+
+                        const int buffersize = 1024 * 16;
+                        var buffer = new byte[buffersize];
+                        int count = stream.Read(buffer, 0, buffersize);
+                        while (count > 0)
+                        {
+                            Response.OutputStream.Write(buffer, 0, count);
+                            buffer = new byte[buffersize];
+                            count = stream.Read(buffer, 0, buffersize);
+                        }
+                    }
+                    finally
+                    {
+                        stream.Close();
+                    }
+                }
+            }
+            finally
+            {
+                lock(_KeySendFile)
+                {
+                    _KeySendFile.Remove(vKey);
+                }
+            }
+        }
+        #endregion
+
+        public virtual string GetUrlRedirectFiles(string vFile)
+        {
+            return vFile;
         }
 
         private void RecebeEventoAra(string vFunction)
