@@ -122,11 +122,11 @@ namespace Ara2
                     throw new Exception("Error on DownloadForce '" + Request.Params["DownloadForce"] + "'\n " + erro.Message);
                 }
             }
-            else if (Request.Params["File"] != null && Request.Params["FileKey"] != null)
+            else if (Request.Params["SendFile"] == "1" && Request.Params["FileKey"] != null)
             {
                 try
                 {
-                    SendFile(Request.Params["File"], Request.Params["FileKey"]);
+                    SendFile(Request.Params["FileKey"]);
                     return;
                 }
                 catch (Exception erro)
@@ -848,31 +848,32 @@ namespace Ara2
         #endregion
 
         #region SendFile
-        static List<string> _KeySendFile = new List<string>();
-        public string GetKeySendFile()
+        static Dictionary<string,string> _KeySendFile = new Dictionary<string, string>();
+        public string GetKeySendFile(string vFile)
         {
             string vRndKey = null;
             lock (_KeySendFile)
             {
                 vRndKey = RandomString(20);
-                while (_KeySendFile.Contains(vRndKey))
+                while (_KeySendFile.ContainsKey(vRndKey))
                 {
                     System.Threading.Thread.Sleep(50);
                     vRndKey = RandomString(20);
                 }
-                _KeySendFile.Add(vRndKey);
+                _KeySendFile.Add(vRndKey, vFile);
             }
             return vRndKey;
         }
 
-        public void SendFile(string vFile,string vKey)
+        public void SendFile(string vKey)
         {
             try
             {
-                if (vFile.LastIndexOf("&") != -1)
-                    vFile = vFile.Substring(0, vFile.LastIndexOf("&"));
-
-                if (!File.Exists(vFile) || !_KeySendFile.Contains(vKey))
+                //if (vFile.LastIndexOf("&") != -1)
+                //    vFile = vFile.Substring(0, vFile.LastIndexOf("&"));
+                //!File.Exists(vFile) ||
+                string vFile;
+                if (!_KeySendFile.TryGetValue(vKey,out vFile) || !File.Exists(vFile))
                 {
                     // Arquivo não encontrado.
                     Response.Clear();

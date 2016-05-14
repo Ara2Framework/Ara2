@@ -746,7 +746,13 @@ namespace Ara2
         }
         #endregion
 
-
+        public static string GetLinkSendFile(string vFile)
+        {
+            if (File.Exists(vFile))
+                return "?SendFile=1&FileKey=" + Tick.GetTick().AraPageMain.GetKeySendFile(vFile) ;
+            else
+                throw new FileNotFoundException(vFile);
+        }
     }
 
     public enum EDeviceType
