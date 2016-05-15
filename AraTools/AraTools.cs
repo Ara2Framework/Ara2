@@ -746,10 +746,14 @@ namespace Ara2
         }
         #endregion
 
-        public static string GetLinkSendFile(string vFile)
+        public static string GetLinkSendFile(string vFile,Ara2.Components.IAraObject vObjLife)
         {
             if (File.Exists(vFile))
-                return "?SendFile=1&FileKey=" + Tick.GetTick().AraPageMain.GetKeySendFile(vFile) ;
+            {
+                string SessionId = (vObjLife != null ? Tick.GetTick().Session.Id : null);
+
+                return "?SendFile=1&FileKey=" + Tick.GetTick().AraPageMain.GetKeySendFile(vFile, SessionId, (vObjLife != null?vObjLife.InstanceID:null)) + (vObjLife != null ? "&SessionID=" + SessionId + "&InstaceId=" + vObjLife.InstanceID : string.Empty);
+            }
             else
                 throw new FileNotFoundException(vFile);
         }

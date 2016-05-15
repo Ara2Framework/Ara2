@@ -107,6 +107,7 @@ namespace Ara2
         private static string AraMemoryAreaCountKey = null;
         protected void Page_Load(object sender, EventArgs e)
         {
+            SendFileClearCache();
 
             if (Request.Params["araignore"] != null)
                 return;
@@ -126,7 +127,9 @@ namespace Ara2
             {
                 try
                 {
-                    SendFile(Request.Params["FileKey"]);
+                    string vSessionTMP = Request.Params["SessionID"];
+                    string vInstaceIdTmp = Request.Params["InstaceId"];
+                    SendFile(Request.Params["FileKey"], vSessionTMP, vInstaceIdTmp);
                     return;
                 }
                 catch (Exception erro)
@@ -848,42 +851,107 @@ namespace Ara2
         #endregion
 
         #region SendFile
-        static Dictionary<string,string> _KeySendFile = new Dictionary<string, string>();
-        public string GetKeySendFile(string vFile)
+        static List<CKeySendFile> _KeySendFile = new List<CKeySendFile>();
+        private class CKeySendFile
         {
-            string vRndKey = null;
-            lock (_KeySendFile)
-            {
-                vRndKey = RandomString(20);
-                while (_KeySendFile.ContainsKey(vRndKey))
-                {
-                    System.Threading.Thread.Sleep(50);
-                    vRndKey = RandomString(20);
-                }
-                _KeySendFile.Add(vRndKey, vFile);
-            }
-            return vRndKey;
+            public string Key;
+            public string vFile;
+            public string Session;
+            public string InstanceId;
         }
 
-        public void SendFile(string vKey)
+        public string GetKeySendFile(string vFile, string vSessionID, string vInstaceId)
         {
+            CKeySendFile vTmpCKeySendFile = _KeySendFile.Where(a => a.vFile == vFile && a.Session == vSessionID && a.InstanceId == vInstaceId).FirstOrDefault();
+            if (vTmpCKeySendFile == null)
+            {
+                string vRndKey = null;
+                lock (_KeySendFile)
+                {
+                    vRndKey = RandomString(20);
+                    while (_KeySendFile.Where(a => a.Key == vRndKey).Any())
+                    {
+                        System.Threading.Thread.Sleep(50);
+                        vRndKey = RandomString(20);
+                    }
+                    _KeySendFile.Add(new CKeySendFile() { Key = vRndKey, vFile = vFile, Session = vSessionID, InstanceId = vInstaceId });
+                }
+                return vRndKey;
+            }
+            else
+                return vTmpCKeySendFile.Key;
+        }
+
+        DateTime _SendFileClearCache = DateTime.Now;
+        private void SendFileClearCache()
+        {
+            if ((DateTime.Now - _SendFileClearCache).TotalMinutes > 1)
+            {
+                foreach (var vTmp in _KeySendFile.Where(a => a.Session != null && a.InstanceId != null).ToArray())
+                {
+                    if (!SendFileValidaSessioninstanceId(ref vTmp.Session, ref vTmp.InstanceId))
+                    {
+                        lock (_KeySendFile)
+                        {
+                            _KeySendFile.Remove(vTmp);
+                        }
+                    }
+                }
+                _SendFileClearCache = DateTime.Now;
+            }
+        }
+
+        private bool SendFileValidaSessioninstanceId(ref string vSession,ref string vInstanceID)
+        {
+            var vSessionObj = Sessions.GetSession(this, vSession);
+            SessionObject vObj;
+            try
+            {
+                return vSessionObj != null && vSessionObj.Objects.TryGetValue(vInstanceID, out vObj);
+            }
+            finally
+            {
+                vObj = null;
+                vSessionObj = null;
+            }
+        }
+
+        public void SendFile(string vKey,string vSessionID, string vInstaceId)
+        {
+            if (vSessionID == string.Empty) vSessionID = null;
+            if (vInstaceId == string.Empty) vInstaceId = null;
+
+            CKeySendFile vTmpCKeySendFile = _KeySendFile.Where(a => a.Key == vKey && a.Session == vSessionID && a.InstanceId == vInstaceId).FirstOrDefault();
+            if (vTmpCKeySendFile!=null && vTmpCKeySendFile.Session!=null )
+            {
+                if (!SendFileValidaSessioninstanceId(ref vTmpCKeySendFile.Session, ref vTmpCKeySendFile.InstanceId))
+                {
+                    lock(_KeySendFile)
+                    {
+                        _KeySendFile.Remove(vTmpCKeySendFile);
+                    }
+                    SendFileRetorna404();
+                    return;
+                }
+            }
+
             try
             {
                 //if (vFile.LastIndexOf("&") != -1)
                 //    vFile = vFile.Substring(0, vFile.LastIndexOf("&"));
                 //!File.Exists(vFile) ||
-                string vFile;
-                if (!_KeySendFile.TryGetValue(vKey,out vFile) || !File.Exists(vFile))
+                
+                
+                if (vTmpCKeySendFile == null || !File.Exists(vTmpCKeySendFile.vFile))
                 {
-                    // Arquivo não encontrado.
-                    Response.Clear();
-                    Response.StatusCode = 404;
-                    //Response.Write("ChaveEncontrada :" + (_KeySendFile.Contains(vKey)?"S":"N"));
-                    Response.End();
+
+                    SendFileRetorna404();
                     return;
                 }
                 else
                 {
+                    string vFile = vTmpCKeySendFile.vFile;
+
                     Stream stream = new StreamReader(vFile).BaseStream;
                     try
                     {
@@ -918,11 +986,23 @@ namespace Ara2
             }
             finally
             {
-                lock(_KeySendFile)
+                if (vTmpCKeySendFile.Session == null && vTmpCKeySendFile.InstanceId == null)
                 {
-                    _KeySendFile.Remove(vKey);
+                    lock (_KeySendFile)
+                    {
+                        _KeySendFile.Remove(vTmpCKeySendFile);
+                    }
                 }
             }
+        }
+
+        private void SendFileRetorna404()
+        {
+            // Arquivo não encontrado.
+            Response.Clear();
+            Response.StatusCode = 404;
+            //Response.Write("ChaveEncontrada :" + (_KeySendFile.Contains(vKey)?"S":"N"));
+            Response.End();
         }
         #endregion
 
