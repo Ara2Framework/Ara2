@@ -26,6 +26,21 @@ namespace Ara2.Session1
 
             
         }
+
+        public ISession NewSession(AraPageMain AraPageMain)
+        {
+            return NewSession(AraPageMain, GetNewIdSession(), 0);
+        }
+        
+        public ISession NewSession(AraPageMain AraPageMain,string vIdSession ,int vAppId)
+        {
+            CloseSession(vIdSession);
+            ISession TmpSession = new Ara2.Session1.Session(AraPageMain, vIdSession, vAppId);
+            TmpSession.ExecuteLoad();
+            TmpSession.SaveSession();
+            return TmpSession;
+        }
+
         Random Rnd = new Random();
         //long _NewIdSession = 0 ;
 

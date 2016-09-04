@@ -169,7 +169,7 @@ namespace Ara2
                 if (Request["SessionId"] != null)
                 {
 
-                    Session = Sessions.GetSession(this,Request["SessionId"]);
+                    Session = this.MemoryArea.GetSession(Request["SessionId"]);
 
                     if (Session == null)
                     {
@@ -213,7 +213,7 @@ namespace Ara2
                     }
                 }
                 else
-                    Session = Sessions.NewSession(this);
+                    Session = this.MemoryArea.NewSession(this);
 
                 
                 MemoryArea.CleanInactiveSession();
@@ -528,8 +528,7 @@ namespace Ara2
                 try
                 {
                     //Reseta Session
-                    Sessions.ReNew(this, vTick.Session.Id, vTick.Session.AppId);
-                    vTick.Session = Sessions.GetSession(this, vTick.Session.Id);
+                    vTick.Session = this.MemoryArea.NewSession(this, vTick.Session.Id, vTick.Session.AppId);
                     vTick.Script.RumLoad();
                 }
                 catch (Exception err)
@@ -903,7 +902,7 @@ namespace Ara2
 
         private bool SendFileValidaSessioninstanceId(ref string vSession,ref string vInstanceID)
         {
-            var vSessionObj = Sessions.GetSession(this, vSession);
+            var vSessionObj = MemoryArea.GetSession(vSession);
             ISessionObject vObj;
             try
             {
@@ -1052,12 +1051,6 @@ namespace Ara2
                 //    break;
             }
         }
-
-        public abstract ISession NewSession(AraPageMain Main, string vIdSession, int vAppId = 0);
-        //{
-        //    return new Session(Main, vIdSession, vAppId);
-        //}
-        
     }
 
 

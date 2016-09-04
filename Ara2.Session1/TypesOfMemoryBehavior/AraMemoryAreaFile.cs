@@ -34,6 +34,20 @@ namespace Ara2.Session1
                 System.IO.Directory.CreateDirectory(System.IO.Path.Combine(Path , "Sessions"));
         }
 
+        public ISession NewSession(AraPageMain AraPageMain)
+        {
+            return NewSession(AraPageMain, GetNewIdSession(), 0);
+        }
+
+        public ISession NewSession(AraPageMain AraPageMain, string vIdSession, int vAppId)
+        {
+            CloseSession(vIdSession);
+            ISession TmpSession = new Ara2.Session1.Session(AraPageMain, vIdSession, vAppId);
+            TmpSession.ExecuteLoad();
+            TmpSession.SaveSession();
+            return TmpSession;
+        }
+
         public string GetNewIdSession()
         {
             int vNumero;

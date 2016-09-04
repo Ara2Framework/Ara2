@@ -96,7 +96,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session\ISession.cs" />
     <Compile Include="Session\ISessionObject.cs" />
-    <Compile Include="Session\Sessions.cs" />
     <Compile Include="Tick\Script.cs" />
     <Compile Include="Tick\Tick.cs" />
     <Content Include="NuGet\NuGet.exe" />
