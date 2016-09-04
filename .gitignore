@@ -10,3 +10,5 @@
 /Ara2.ToolsExtension/Ara2.ToolsExtension/bin
 /Ara2.ToolsExtension/Ara2.ToolsExtension/obj
 *.user
+/Ara2.Session2/bin/Debug
+/Ara2.Session2/obj/Debug
