@@ -5,8 +5,9 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Ara2.Memory;
 
-namespace Ara2.Memory
+namespace Ara2.Session1
 {
     public class AraMemoryAreaFile : IAraMemoryArea
     {
@@ -72,7 +73,7 @@ namespace Ara2.Memory
         {
             lock (SpinLock)
 			{
-            	return new CustomBinarySerializer<Session>().DeserializeFromBytes(File.ReadAllBytes(System.IO.Path.Combine(new string[] { Path, "Sessions", vIdSession, vIdSession + ".bin" })));
+            	return new CustomBinarySerializer<ISession>().DeserializeFromBytes(File.ReadAllBytes(System.IO.Path.Combine(new string[] { Path, "Sessions", vIdSession, vIdSession + ".bin" })));
 			}
         }
         public void SaveSession(ISession vSession)

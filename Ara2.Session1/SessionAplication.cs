@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 
-namespace Ara2.SessionAplication
+namespace Ara2.Session1
 {
     [Serializable]
     public class SessionsAplication

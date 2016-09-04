@@ -9,7 +9,7 @@ using System.Text;
 
 using Ara2.Components;
 
-namespace Ara2.SessionAplication
+namespace Ara2.Session1
 {
     [Serializable]
     public class SessionAplications:AraObject

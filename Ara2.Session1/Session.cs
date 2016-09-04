@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
-using Ara2.SessionAplication;
 using Ara2.Components;
 using System.Threading;
 
@@ -15,7 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Reflection;
 
-namespace Ara2
+namespace Ara2.Session1
 {
     
     [Serializable]

@@ -13,10 +13,10 @@ namespace Ara2
     [Serializable]
     public static class Sessions
     {
-        static public void ReNew(AraPageMain AraPageMain, string vIdSession)
+        static public void ReNew(AraPageMain AraPageMain, string vIdSession, int vAppId)
         {
             AraPageMain.MemoryArea.CloseSession(vIdSession);
-            Session TmpSession = new Session(AraPageMain, vIdSession);
+            ISession TmpSession = AraPageMain.NewSession(AraPageMain, vIdSession, vAppId);
             TmpSession.SaveSession();
         }
 
@@ -39,22 +39,18 @@ namespace Ara2
 
         static public ISession NewSession(AraPageMain PageMain)
         {
-            if (string.IsNullOrEmpty(PageMain.Page.Request["SetSessionID"]))
-                return NewSession(PageMain, PageMain.MemoryArea.GetNewIdSession(), 0);
-            else
-                return NewSession(PageMain, PageMain.Page.Request["SetSessionID"], 0);
-        }
-
-        static public Session NewSession(AraPageMain AraPageMain, string vIdSession, int vAppId)
-        {
-            AraPageMain.MemoryArea.CloseSession(vIdSession);
-            Session TmpSession = new Session(AraPageMain, vIdSession, vAppId);
+            // Desativei este recurso pois pode ocasionar falha de segurança
+            //if (string.IsNullOrEmpty(PageMain.Page.Request["SetSessionID"]))
+            var vIdSession = PageMain.MemoryArea.GetNewIdSession();
+            PageMain.MemoryArea.CloseSession(vIdSession);
+            ISession TmpSession = PageMain.NewSession(PageMain, vIdSession, 0);
             TmpSession.ExecuteLoad();
             TmpSession.SaveSession();
             return TmpSession;
+
+            //else
+            //    return NewSession(PageMain, PageMain.Page.Request["SetSessionID"], 0);
         }
-
-
     }
 
 }

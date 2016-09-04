@@ -528,7 +528,7 @@ namespace Ara2
                 try
                 {
                     //Reseta Session
-                    Sessions.ReNew(this, vTick.Session.Id);
+                    Sessions.ReNew(this, vTick.Session.Id, vTick.Session.AppId);
                     vTick.Session = Sessions.GetSession(this, vTick.Session.Id);
                     vTick.Script.RumLoad();
                 }
@@ -1052,6 +1052,12 @@ namespace Ara2
                 //    break;
             }
         }
+
+        public abstract ISession NewSession(AraPageMain Main, string vIdSession, int vAppId = 0);
+        //{
+        //    return new Session(Main, vIdSession, vAppId);
+        //}
+        
     }
 
 

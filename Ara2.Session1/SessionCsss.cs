@@ -10,7 +10,7 @@ using System.Text;
 using Ara2.Components;
 using System.Collections;
 
-namespace Ara2
+namespace Ara2.Session1
 {
     [Serializable]
     public class SessionCsss:AraObject

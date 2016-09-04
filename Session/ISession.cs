@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
-using Ara2.SessionAplication;
 using Ara2.Components;
 using System.Threading;
 
@@ -35,6 +34,7 @@ namespace Ara2
         IAraObject GetObject(string vInstanceID);
         void SaveSession();
         void AddJs(string vJs);
+        void ExecuteLoad();
 
         Dictionary<string, ISessionObject> Objects { get; }
 

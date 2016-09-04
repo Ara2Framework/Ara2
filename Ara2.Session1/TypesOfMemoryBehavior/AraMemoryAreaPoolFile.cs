@@ -5,8 +5,9 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Ara2.Memory;
 
-namespace Ara2.Memory
+namespace Ara2.Session1
 {
     public class AraMemoryAreaPoolFile : IAraMemoryArea
     {
