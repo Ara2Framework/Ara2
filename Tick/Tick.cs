@@ -72,13 +72,13 @@ namespace Ara2
 
         public AraPageMain AraPageMain;
         public int ThreadId;
-        public Session Session;
+        public ISession Session;
         public System.Web.UI.Page Page;
         public Script Script;
         public bool AbsoluteEndOfTheResponses = false;
         public bool ReturnisJavascript = true;
 
-        public Tick(Session vSession, System.Web.UI.Page vPage, AraPageMain vAraPageMain)
+        public Tick(ISession vSession, System.Web.UI.Page vPage, AraPageMain vAraPageMain)
         {
             AraPageMain = vAraPageMain;
             Session = vSession;

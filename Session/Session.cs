@@ -19,11 +19,23 @@ namespace Ara2
 {
     
     [Serializable]
-    public class Session : IDisposable
+    public class Session : ISession
     {
-        public string Id;
-        public int AppId = 0;
-        public DateTime LastCall = DateTime.Now;
+        public string Id { get; set; }
+        int _AppId = 0;
+        public int AppId
+        {
+            get { return _AppId; }
+            set { _AppId = value; }
+        }
+
+        DateTime _LastCall = DateTime.Now;
+        public DateTime LastCall
+        {
+            get { return _LastCall; }
+            set { _LastCall = value; }
+        }
+
         private bool _External=false;
 
         /// <summary>
@@ -37,10 +49,34 @@ namespace Ara2
         public AraEvent<Action> OnLoad = new AraEvent<Action>();
         public AraEvent<Action> OnUnload = new AraEvent<Action>();
 
-        public delegate void DOnReceivesInternalEvent(IAraObjectClienteServer vObj, string NameEvent);
 
-        public AraEvent<DOnReceivesInternalEvent> OnReceivesInternalEventBefore = new AraEvent<DOnReceivesInternalEvent>();
-        public AraEvent<DOnReceivesInternalEvent> OnReceivesInternalEventAfter = new AraEvent<DOnReceivesInternalEvent>();
+        AraEvent<Action<IAraObjectClienteServer, string>> _OnReceivesInternalEventBefore = new AraEvent<Action<IAraObjectClienteServer, string>>();
+        public AraEvent<Action<IAraObjectClienteServer, string>> OnReceivesInternalEventBefore
+        {
+            get
+            {
+                return _OnReceivesInternalEventBefore;
+            }
+            set
+            {
+                _OnReceivesInternalEventBefore = value;
+            }
+        }
+
+
+        AraEvent<Action<IAraObjectClienteServer, string>> _OnReceivesInternalEventAfter = new AraEvent<Action<IAraObjectClienteServer, string>>();
+        public AraEvent<Action<IAraObjectClienteServer, string>> OnReceivesInternalEventAfter
+        {
+            get
+            {
+                return _OnReceivesInternalEventAfter;
+            }
+            set
+            {
+                _OnReceivesInternalEventAfter = value;
+            }
+        }
+        
 
         public Session(AraPageMain AraPageMain,string vId,int vAddId):
             this(AraPageMain,vId)
@@ -69,11 +105,11 @@ namespace Ara2
             Id = vId;
         }
 
-        public WindowMain WindowMain
+        public IAraWindowMain WindowMain
         {
             get
             {
-                return (WindowMain)(Objects.First().Value.Object);
+                return (IAraWindowMain)(Objects.First().Value.Object);
             }
         }
 
@@ -167,9 +203,9 @@ namespace Ara2
         }
 
         [NonSerialized]
-        Dictionary<string,SessionObject> _Objects = null;
+        Dictionary<string,ISessionObject> _Objects = null;
 
-        public Dictionary<string, SessionObject> Objects
+        public Dictionary<string, ISessionObject> Objects
         {
             get
             {
@@ -180,12 +216,12 @@ namespace Ara2
             }
         }
 
-        public List<SessionObject> GetObjectsByType(Type vType)
+        public List<ISessionObject> GetObjectsByType(Type vType)
         {
             return _Objects.Values.Where(a=> a.Type == vType || a.Type.GetInterface(vType.FullName)!=null).ToList();
         }
 
-        public void AddObject(WindowMain WindowMain)
+        public void AddObject(IAraWindowMain WindowMain)
         {
             if (!Objects.ContainsKey(WindowMain.InstanceID))
                 Objects.Add(WindowMain.InstanceID, new SessionObject(this, WindowMain));
@@ -230,7 +266,7 @@ namespace Ara2
         {
             try
             {
-                SessionObject vTmpSObj=null;
+                ISessionObject vTmpSObj=null;
                 if (Objects.TryGetValue(vInstanceID, out vTmpSObj))
                     return vTmpSObj.Object;
                 else
@@ -247,13 +283,13 @@ namespace Ara2
 
         public void SaveObjects()
         {
-            SessionObject[] vTmpObjs;
+            ISessionObject[] vTmpObjs;
             lock(Objects)
             {
                 vTmpObjs = Objects.Values.Where(a=>a.NeedSave).ToArray();
             }
 
-            foreach (SessionObject vTmpObj in vTmpObjs)
+            foreach (var vTmpObj in vTmpObjs)
                 vTmpObj.SaveObject();
         }
 

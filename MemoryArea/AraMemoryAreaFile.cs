@@ -68,14 +68,14 @@ namespace Ara2.Memory
             throw new NotImplementedException();
         }
 
-        public Session GetSession( string vIdSession)
+        public ISession GetSession( string vIdSession)
         {
             lock (SpinLock)
 			{
             	return new CustomBinarySerializer<Session>().DeserializeFromBytes(File.ReadAllBytes(System.IO.Path.Combine(new string[] { Path, "Sessions", vIdSession, vIdSession + ".bin" })));
 			}
         }
-        public void SaveSession(Session vSession)
+        public void SaveSession(ISession vSession)
         {
             lock (SpinLock)
 			{
@@ -117,7 +117,7 @@ namespace Ara2.Memory
             throw new Exception("Falta terminar CloseSession");
         }
 
-        public string GetNewIdObject(Session Session)
+        public string GetNewIdObject(ISession Session)
         {
 			int? vNumero=null;
 			for(int nT=0;nT < 10;nT++)
@@ -191,11 +191,11 @@ namespace Ara2.Memory
 			throw new TimeoutException();
 		}
 		
-        public SessionObject[] GetObjects(Session Session)
+        public ISessionObject[] GetObjects(ISession Session)
         {
             lock (SpinLock)
 			{
-	            List<SessionObject> Objs = new List<SessionObject>();
+	            List<ISessionObject> Objs = new List<ISessionObject>();
 	            foreach (string vFile in  GetFilesDirectory(System.IO.Path.Combine(Path , "Sessions" , Session.Id),100))
 	            {
 					//"Object_*.bin"
@@ -247,7 +247,7 @@ namespace Ara2.Memory
 				
 		}
 		
-        public Ara2.Components.IAraObject GetObject(Session Session, string InstanceID)
+        public Ara2.Components.IAraObject GetObject(ISession Session, string InstanceID)
         {
 			
             FileStream TmpF=null;
@@ -280,7 +280,7 @@ namespace Ara2.Memory
 			}
         }
 
-        public void SaveObject(Session Session, Ara2.Components.IAraObject vObject)
+        public void SaveObject(ISession Session, Ara2.Components.IAraObject vObject)
         {
             byte[] vObjectBit;
 
@@ -305,7 +305,7 @@ namespace Ara2.Memory
             //File.WriteAllBytes(Path + "Sessions\\" + Session.Id + "\\Object_" + InstanceID + ".bin", vObject);
         }
 
-        public void CloseObject(Session Session, string InstanceID)
+        public void CloseObject(ISession Session, string InstanceID)
         {
             throw new Exception("CloseObject no implemented");
             //lock (_Objects)

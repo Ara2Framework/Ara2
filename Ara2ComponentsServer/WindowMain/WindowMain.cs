@@ -25,7 +25,7 @@ namespace Ara2.Components
 
         }
 
-        public WindowMain(Session vSession) :
+        public WindowMain(ISession vSession) :
             base(AraObjectClienteServer.Create(null, "div"), null, "AraWindowMain")
         {
             #region Set Eventos
@@ -582,7 +582,7 @@ namespace Ara2.Components
 
         #endregion
 
-        public static WindowMain GetInstance()
+        public static IAraWindowMain GetInstance()
         {
             return Tick.GetTick().Session.WindowMain;
         }

@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.suo
+/Ara2.AraTimer/obj
+/Ara2.AraTimer/bin
+.vs
+*.user
+/Ara2.AraTimer/Nuget/Ara2.AraTimer.*.nupkg

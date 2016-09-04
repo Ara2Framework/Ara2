@@ -10,18 +10,18 @@ namespace Ara2.Memory
     {
         string GetNewIdSession();
         string[] GetSessionIDs();
-        Session GetSession(string vIdSession);
+        ISession GetSession(string vIdSession);
         int CountSession{get;}
         void CleanInactiveSession();
-        void SaveSession( Session vSession);
+        void SaveSession(ISession vSession);
         void CloseSession(string vSessionId);
 
-        string GetNewIdObject(Session Session);
-        SessionObject[] GetObjects(Session Session);
-        Ara2.Components.IAraObject GetObject(Session Session, string InstanceID);
-        void SaveObject(Session Session, Ara2.Components.IAraObject vObject);
+        string GetNewIdObject(ISession Session);
+        ISessionObject[] GetObjects(ISession Session);
+        Ara2.Components.IAraObject GetObject(ISession Session, string InstanceID);
+        void SaveObject(ISession Session, Ara2.Components.IAraObject vObject);
 
-        void CloseObject(Session Session, string InstanceID);
+        void CloseObject(ISession Session, string InstanceID);
     }
 
 }

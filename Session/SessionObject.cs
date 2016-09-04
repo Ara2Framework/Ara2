@@ -12,20 +12,20 @@ using Ara2.Components;
 namespace Ara2
 {
     [Serializable]
-    public class SessionObject
+    public class SessionObject: ISessionObject
     {
-        Session Session;
+        ISession Session;
 
         [NonSerialized]
         IAraObject _Object = null;
 
-        public SessionObject(Session vSession, string vInstanceID)
+        public SessionObject(ISession vSession, string vInstanceID)
         {
             Session = vSession;
             _InstanceID = vInstanceID;
         }
 
-        public SessionObject(Session vSession, IAraObject vObject)
+        public SessionObject(ISession vSession, IAraObject vObject)
         {
             Session = vSession;
             _Object = vObject;

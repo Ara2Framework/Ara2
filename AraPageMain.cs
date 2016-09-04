@@ -71,7 +71,7 @@ namespace Ara2
         /// Define o Window Main 
         /// </summary>
         /// <returns> Retorne o WindowMain</returns>
-        public virtual Ara2.Components.WindowMain GetWindowMain(Session Session)
+        public virtual Ara2.Components.WindowMain GetWindowMain(ISession Session)
         {
             throw new Exception("Falta declarar o GetWindowMain em AraPageMain");
         }
@@ -164,7 +164,7 @@ namespace Ara2
             {
                 
 
-                Session Session = null;
+                ISession Session = null;
 
                 if (Request["SessionId"] != null)
                 {
@@ -904,7 +904,7 @@ namespace Ara2
         private bool SendFileValidaSessioninstanceId(ref string vSession,ref string vInstanceID)
         {
             var vSessionObj = Sessions.GetSession(this, vSession);
-            SessionObject vObj;
+            ISessionObject vObj;
             try
             {
                 return vSessionObj != null && vSessionObj.Objects.TryGetValue(vInstanceID, out vObj);

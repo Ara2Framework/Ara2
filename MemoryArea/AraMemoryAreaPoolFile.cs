@@ -76,9 +76,9 @@ namespace Ara2.Memory
         private struct _SSession
         {
             public DateTime LastAccessTime;
-            public Session data;
+            public ISession data;
 
-            public _SSession(DateTime vLastAccessTime, Session vdata)
+            public _SSession(DateTime vLastAccessTime, ISession vdata)
             {
                 data = vdata;
                 LastAccessTime = vLastAccessTime;
@@ -87,7 +87,7 @@ namespace Ara2.Memory
 
         Dictionary<int, _SSession> _Sessions = new Dictionary<int, _SSession>();
 
-        public Session GetSession(string vIdSession)
+        public ISession GetSession(string vIdSession)
         {
 			lock (_Sessions)
             {
@@ -102,7 +102,7 @@ namespace Ara2.Memory
                     return null;
 			}
         }
-        public void SaveSession(Session vByts)
+        public void SaveSession(ISession vByts)
         {
 			lock (_Sessions)
             {
@@ -188,7 +188,7 @@ namespace Ara2.Memory
 
         }
 
-        public string GetNewIdObject(Session Session)
+        public string GetNewIdObject(ISession Session)
         {
 			lock(this)
 			{
@@ -211,7 +211,7 @@ namespace Ara2.Memory
 
         Dictionary<int, List<_SessionObject>> _Objects = new Dictionary<int, List<_SessionObject>>();
 
-        public SessionObject[] GetObjects(Session Session)
+        public ISessionObject[] GetObjects(ISession Session)
         {
             if (_Objects.ContainsKey(Convert.ToInt32(Session.Id)))
             {
@@ -245,7 +245,7 @@ namespace Ara2.Memory
         }
 
 
-        public Ara2.Components.IAraObject GetObject(Session Session, string InstanceID)
+        public Ara2.Components.IAraObject GetObject(ISession Session, string InstanceID)
         {
             if (!_Objects.ContainsKey(Convert.ToInt32(Session.Id)))
                 _Objects.Add(Convert.ToInt32(Session.Id), new List<_SessionObject>());
@@ -310,7 +310,7 @@ namespace Ara2.Memory
             return false;
         }
 
-        public void SaveObject(Session Session,Ara2.Components.IAraObject vObject)
+        public void SaveObject(ISession Session,Ara2.Components.IAraObject vObject)
         {
             lock (this)
             {
@@ -354,7 +354,7 @@ namespace Ara2.Memory
             //File.WriteAllBytes(Path + "Sessions\\" + Session.Id + "\\Object_" + InstanceID + ".bin", vObject);
         }
 
-        public void CloseObject(Session Session, string InstanceID)
+        public void CloseObject(ISession Session, string InstanceID)
         {
             lock (_Objects)
             {

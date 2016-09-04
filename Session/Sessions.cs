@@ -20,9 +20,9 @@ namespace Ara2
             TmpSession.SaveSession();
         }
 
-        static public Session GetSession(AraPageMain AraPageMain, string vSessionID)
+        static public ISession GetSession(AraPageMain AraPageMain, string vSessionID)
         {
-            Session TmpSession;
+            ISession TmpSession;
             try
             {
                 TmpSession = AraPageMain.MemoryArea.GetSession( vSessionID);
@@ -37,7 +37,7 @@ namespace Ara2
             return TmpSession;
         }
 
-        static public Session NewSession(AraPageMain PageMain)
+        static public ISession NewSession(AraPageMain PageMain)
         {
             if (string.IsNullOrEmpty(PageMain.Page.Request["SetSessionID"]))
                 return NewSession(PageMain, PageMain.MemoryArea.GetNewIdSession(), 0);

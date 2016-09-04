@@ -51,7 +51,7 @@ namespace Ara2.Memory
             return _Sessions.Keys.ToArray();
         }
 
-        public Session GetSession(string vIdSession)
+        public ISession GetSession(string vIdSession)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Ara2.Memory
                 return null;
             }
         }
-        public void SaveSession(Session vByts)
+        public void SaveSession(ISession vByts)
         {
             lock (_Sessions)
             {
@@ -120,7 +120,7 @@ namespace Ara2.Memory
             catch { }
         }
 
-        public string GetNewIdObject(Session Session)
+        public string GetNewIdObject(ISession Session)
         {
             return _Sessions[Session.Id].GetNewIdObject().ToString();
         }
@@ -128,7 +128,7 @@ namespace Ara2.Memory
         private class _Session:IDisposable
         {
             private int NewIdObject;
-            public Session Session;
+            public ISession Session;
             public Dictionary<string, _SessionObject> Objects = new Dictionary<string,_SessionObject>();
 
             public int GetNewIdObject()
@@ -194,7 +194,7 @@ namespace Ara2.Memory
             public Ara2.Components.IAraObject data;
         }
 
-        public SessionObject[] GetObjects(Session Session)
+        public ISessionObject[] GetObjects(ISession Session)
         {
             try
             {
@@ -206,7 +206,7 @@ namespace Ara2.Memory
             }
         }
 
-        public Ara2.Components.IAraObject GetObject(Session Session, string InstanceID)
+        public Ara2.Components.IAraObject GetObject(ISession Session, string InstanceID)
         {
             try
             {
@@ -215,7 +215,7 @@ namespace Ara2.Memory
             catch { return null; }
         }
 
-        public void SaveObject(Session Session, Ara2.Components.IAraObject vObject)
+        public void SaveObject(ISession Session, Ara2.Components.IAraObject vObject)
         {
             var vTmpS = _Sessions[Session.Id];
             var vTmpO = vTmpS.GetObjectOrNull(vObject.InstanceID);
@@ -224,7 +224,7 @@ namespace Ara2.Memory
         }
 
 
-        public void CloseObject(Session Session, string InstanceID)
+        public void CloseObject(ISession Session, string InstanceID)
         {
 
             _Sessions[Session.Id].CloseObject(InstanceID);

@@ -52,5 +52,13 @@ namespace Ara2.Components
         AraEvent<Action> Active { get; set; }
 
         AraComponentEvent<DMenssage> Menssage { get; set; }
+
+        void RumActionWaitLoading(int vKey);
+
+        void Alert(string vM);
+        void Alert<T>(string vM, T Retorno, params object[] vParametros);
+        void AlertYesOrNo<T>(string vM, T EventReturn, params object[] vParametros);
+        void AsynchronousFunction<T>(T vEventReturn, params object[] vParametros) ;
+        void AlertGetString<T>(string vM, string vValuedefault, T EventReturn, params object[] vParametros);
     }
 }
