@@ -1,0 +1,484 @@
+{
+	"Projeto": {
+		"Name": "AraForeignKeyLinq",
+		"DateLastModified": "2014-09-24T16:12:37.8725585-03:00",
+		"Version": 1
+	},
+	"Canvas": {
+		"TypeName": "Ara2.Components.AraDiv",
+		"TypeAssembly": "Ara2.Components.AraDiv, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+		"Propertys": [{
+			"Name": "Name",
+			"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+			"Value": "AraForeignKeyLinq",
+			"ValueDefault": "",
+			"CustomEdition": false
+		},
+		{
+			"Name": "Left",
+			"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Value": "0px",
+			"ValueDefault": "",
+			"CustomEdition": false
+		},
+		{
+			"Name": "Top",
+			"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Value": "0px",
+			"ValueDefault": "",
+			"CustomEdition": false
+		},
+		{
+			"Name": "MinWidth",
+			"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Value": "10px",
+			"ValueDefault": "",
+			"CustomEdition": false
+		},
+		{
+			"Name": "MinHeight",
+			"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Value": "10px",
+			"ValueDefault": "",
+			"CustomEdition": false
+		},
+		{
+			"Name": "Width",
+			"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Value": "600px",
+			"ValueDefault": "",
+			"CustomEdition": false
+		},
+		{
+			"Name": "Height",
+			"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Value": "25px",
+			"ValueDefault": "",
+			"CustomEdition": false
+		}],
+		"Children": [{
+			"TypeName": "Ara2.Components.AraTextBox",
+			"TypeNameInternal": "Ara2.Components.AraTextBox, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Propertys": [{
+				"Name": "MaskType",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MaskDefaultValue",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Name",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "txtCodigo",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Left",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "0px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Top",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "3px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinWidth",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "10px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinHeight",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "17px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Width",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "90px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Height",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "17px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "ZIndex",
+				"ValueType": "System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "3",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "LostFocus",
+				"ValueType": "Ara2.Components.AraComponentEvent`1[[System.EventHandler, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "txtCodigo_LostFocus",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "KeyDown",
+				"ValueType": "Ara2.Components.AraComponentEventKey`1[[Ara2.Components.AraTextBox+Key_delegate, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "txtCodigo_KeyDown",
+				"ValueDefault": "",
+				"CustomEdition": false
+			}],
+			"Children": []
+		},
+		{
+			"TypeName": "Ara2.Grid.AraFormSearchLinqButton",
+			"TypeNameInternal": "Ara2.Grid.AraFormSearchLinqButton, Ara2.Grid, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Propertys": [{
+				"Name": "Text",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "",
+				"ValueDefault": " ",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Ico",
+				"ValueType": "Ara2.Components.AraButton+ButtonIco, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "search",
+				"ValueDefault": "None",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Name",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "bPesquisa",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Left",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "99px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Top",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "2px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinWidth",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "10px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinHeight",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "20px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Width",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "25px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Height",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "20px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "ZIndex",
+				"ValueType": "System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "1",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Return",
+				"ValueType": "Ara2.Components.AraEvent`1[[Ara2.Components.AraWindow+DAraWindowUnload, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "bPesquisa_Return",
+				"ValueDefault": "",
+				"CustomEdition": false
+			}],
+			"Children": []
+		},
+		{
+			"TypeName": "Ara2.Components.AraButton",
+			"TypeNameInternal": "Ara2.Components.AraButton, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Propertys": [{
+				"Name": "Ico",
+				"ValueType": "Ara2.Components.AraButton+ButtonIco, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "triangle_1_s",
+				"ValueDefault": "None",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Name",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "bSelect",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Anchor.Right",
+				"ValueType": "System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "3",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Left",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "567px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Top",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "3px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinWidth",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "10px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinHeight",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "20px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Width",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "30px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Height",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "20px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "ZIndex",
+				"ValueType": "System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "5",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Click",
+				"ValueType": "Ara2.Components.AraComponentEvent`1[[System.EventHandler, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "bSelect_Click",
+				"ValueDefault": "",
+				"CustomEdition": false
+			}],
+			"Children": []
+		},
+		{
+			"TypeName": "Ara2.Components.AraTextBox",
+			"TypeNameInternal": "Ara2.Components.AraTextBox, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Propertys": [{
+				"Name": "MaskType",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MaskDefaultValue",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Name",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "txtNome",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Anchor.Left",
+				"ValueType": "System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "160",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Anchor.Right",
+				"ValueType": "System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "40",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Left",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "160px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Top",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "3px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinWidth",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "10px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinHeight",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "17px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Width",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "400px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Height",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "17px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "ZIndex",
+				"ValueType": "System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "4",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "LostFocus",
+				"ValueType": "Ara2.Components.AraComponentEvent`1[[System.EventHandler, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "txtNome_LostFocus",
+				"ValueDefault": "",
+				"CustomEdition": false
+			}],
+			"Children": []
+		},
+		{
+			"TypeName": "Ara2.Components.AraButton",
+			"TypeNameInternal": "Ara2.Components.AraButton, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+			"Propertys": [{
+				"Name": "Ico",
+				"ValueType": "Ara2.Components.AraButton+ButtonIco, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "plus",
+				"ValueDefault": "None",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Name",
+				"ValueType": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "bNew",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Left",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "128px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Top",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "2px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinWidth",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "10px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "MinHeight",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "2px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Width",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "25px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Height",
+				"ValueType": "Ara2.Components.AraDistance, Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "20px",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "ZIndex",
+				"ValueType": "System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+				"Value": "2",
+				"ValueDefault": "",
+				"CustomEdition": false
+			},
+			{
+				"Name": "Click",
+				"ValueType": "Ara2.Components.AraComponentEvent`1[[System.EventHandler, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Ara2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+				"Value": "bNew_Click",
+				"ValueDefault": "",
+				"CustomEdition": false
+			}],
+			"Children": []
+		}]
+	}
+}

@@ -303,7 +303,10 @@ namespace Ara2.Session1
             }
         }
 
-        public object CustomSession=null;
+        public bool ExistsObject(string vInstanceID)
+        {
+            return Objects.ContainsKey(vInstanceID);
+        }
     }
 
     

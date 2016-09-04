@@ -900,19 +900,10 @@ namespace Ara2
             }
         }
 
-        private bool SendFileValidaSessioninstanceId(ref string vSession,ref string vInstanceID)
+        private bool SendFileValidaSessioninstanceId(ref string vSession, ref string vInstanceID)
         {
             var vSessionObj = MemoryArea.GetSession(vSession);
-            ISessionObject vObj;
-            try
-            {
-                return vSessionObj != null && vSessionObj.Objects.TryGetValue(vInstanceID, out vObj);
-            }
-            finally
-            {
-                vObj = null;
-                vSessionObj = null;
-            }
+            return vSessionObj != null && vSessionObj.ExistsObject(vInstanceID);
         }
 
         public void SendFile(string vKey,string vSessionID, string vInstaceId)

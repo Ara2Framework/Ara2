@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-language" content="pt-BR">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" /> 
+</head>
+<body style="margin: 0;	padding: 0;">
+	<div id="Mensagem"></div>
+	<iframe id="iFrame" style="left:0px;top:0px; right:0px; bottom:0px; width:100%;height:100%;diplay:none;border:0px;position:absolute;" frameborder="0" scrolling="no" ></iframe>
+	<script>
+	var QueryString = function () {
+	  // This function is anonymous, is executed immediately and 
+	  // the return value is assigned to QueryString!
+	  var query_string = {};
+	  var query = window.location.search.substring(1);
+	  var vars = query.split("&");
+	  for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+			// If first entry with this name
+		if (typeof query_string[pair[0]] === "undefined") {
+		  query_string[pair[0]] = pair[1];
+			// If second entry with this name
+		} else if (typeof query_string[pair[0]] === "string") {
+		  var arr = [ query_string[pair[0]], pair[1] ];
+		  query_string[pair[0]] = arr;
+			// If third or later entry with this name
+		} else {
+		  query_string[pair[0]].push(pair[1]);
+		}
+	  } 
+		return query_string;
+	} ();
+	</script>
+	<script>
+		var CarregouAra=false;
+		var vNTentitivas = 0;
+		window.addEventListener('message', RecebeMessage, false);
+
+		function RecebeMessage(event) {
+			debugger;
+			var Menssage = eval("(" + event.data + ")");
+			switch  (Menssage.Event)
+			{
+				case "EndLoadAra":
+					vNTentitivas=0;
+					iFrame.style.display = "block";
+					Mensagem.style.display = "none";
+					CarregouAra=true;
+				break;
+				case "TickScript":
+					
+				break;
+				case "TickError":
+					RecarregaIFrame("Erro de rede. Recarregando..");
+				break;
+				case "Reload":
+					RecarregaIFrame("Recarregando..");
+				break;
+			}
+		}
+		
+		//var vUrl = "http://192.168.1.102:8082/";
+		
+		var vUrl = QueryString.url;
+		if (!vUrl) 
+		{
+			alert("Defina a URL");
+			return;
+		}
+		//var vUrl = "b.html";
+		var Menssagem = document.getElementById("Mensagem");
+		Menssagem.innerHTML = "Conectando...";
+		
+		var iFrame = document.getElementById("iFrame");
+		iFrame.onload=Carregou;
+		iFrame.src = vUrl + "?r=" + Math.random();
+		
+		iFrame.style.display = "none";
+		Mensagem.style.display = "block";
+			
+		
+		function Carregou(e)
+		{
+			if (!CarregouAra)
+				RecarregaIFrame("Reconectando... " + vNTentitivas);
+		}
+		
+		function RecarregaIFrame(vMsg)
+		{
+			vNTentitivas+=1;
+			Menssagem.innerHTML = vMsg;
+			iFrame.style.display = "none";
+			Mensagem.style.display = "block";
+					
+			CarregouAra=false;
+			setTimeout(function(){ iFrame.src = vUrl + "?r=" + Math.random();},1000);
+		}
+		
+
+	</script>
+</body>
+</html>

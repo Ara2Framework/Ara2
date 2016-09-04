@@ -32,11 +32,14 @@ namespace Ara2
         void DellObject(IAraObject vObj);
         string GetNewID();
         IAraObject GetObject(string vInstanceID);
+        bool ExistsObject(string vInstanceID);
+
         void SaveSession();
         void AddJs(string vJs);
+        void AddCss(string vCss);
         void ExecuteLoad();
 
-        Dictionary<string, ISessionObject> Objects { get; }
+        //Dictionary<string, ISessionObject> Objects { get; }
 
         IAraWindowMain WindowMain { get; }
     }

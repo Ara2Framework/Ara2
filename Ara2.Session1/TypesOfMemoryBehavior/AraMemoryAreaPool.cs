@@ -38,6 +38,7 @@ namespace Ara2.Session1
             ISession TmpSession = new Ara2.Session1.Session(AraPageMain, vIdSession, vAppId);
             TmpSession.ExecuteLoad();
             TmpSession.SaveSession();
+            TmpSession.LastCall = DateTime.Now;
             return TmpSession;
         }
 
@@ -73,7 +74,10 @@ namespace Ara2.Session1
             {
                 _Session TmpSessions = null;
                 if (_Sessions.TryGetValue(vIdSession, out TmpSessions))
+                {
+                    TmpSessions.Session.LastCall = DateTime.Now;
                     return TmpSessions.Session;
+                }
                 else
                     return null;
             }

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Ara2.AraGrid</id>
+        <version>$version$</version>
+        <title>Ara2.AraGrid</title>
+        <authors>rafaelleonel</authors>
+        <owners>rafaelleonel</owners>
+        <licenseUrl>http://www.araframework.com.br/license</licenseUrl>
+        <projectUrl>http://www.araframework.com.br</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Componente do AraFramework</description>
+        <copyright>Copyright (c) 2010-2016, Rafael Leonel Pontani. All rights reserved.</copyright>
+        <language>pt-BR</language>
+        <dependencies>
+            <dependency id="Ara2" version="1.3.0.2" />
+            <dependency id="Ara2.AraButton" version="1.0.0.2"/>
+            <dependency id="Ara2.AraDiv" version="1.0.0.2"/>
+            <dependency id="Ara2.AraLabel" version="1.0.0.2"/>
+            <dependency id="Ara2.AraMenu" version="1.0.0.0"/>
+            <dependency id="Ara2.AraSelect" version="1.0.0.0"/>
+            <dependency id="Ara2.AraTable" version="1.0.0.0"/>
+            <dependency id="Ara2.AraTimer" version="1.0.0.1"/>
+            <dependency id="Ara2.AraWindow" version="1.0.0.3"/>
+            <dependency id="DynamicQuery" version="1.0"/>
+            <dependency id="EPPlus" version="4.0.4"/>
+            <dependency id="Ara2.AraSplitContainers" version="1.0.0.0"/>          
+            <dependency id="Ara2.AraTabs" version="1.0.0.0"/>
+            <dependency id="Ara2.AraTextBox" version="1.0.0.2"/>          
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Ara2\Components\AraGrid\AraGrid.js" target="content\Ara2\Components\AraGrid\AraGrid.js" />
+        <file src="..\Ara2\Components\AraGrid\CREDITS.md" target="content\Ara2\Components\AraGrid\CREDITS.md" />
+        <file src="..\Ara2\Components\AraGrid\LICENSE.md" target="content\Ara2\Components\AraGrid\LICENSE.md" />
+        
+        <file src="..\Ara2\Components\AraGrid\files\grid_locale-pt-br.js" target="content\Ara2\Components\AraGrid\files\grid_locale-pt-br.js" />
+        <file src="..\Ara2\Components\AraGrid\files\jquery_jqGrid_min.js" target="content\Ara2\Components\AraGrid\files\jquery_jqGrid_min.js" />
+        <file src="..\Ara2\Components\AraGrid\files\jquery_jqGrid_src.js" target="content\Ara2\Components\AraGrid\files\jquery_jqGrid_src.js" />
+        <file src="..\Ara2\Components\AraGrid\files\ui_jqgrid.css" target="content\Ara2\Components\AraGrid\files\ui_jqgrid.css" />
+        <file src="..\Ara2\Components\AraGrid\files\ui_jqgrid_Ara2.css" target="content\Ara2\Components\AraGrid\files\ui_jqgrid_Ara2.css" />
+        
+      
+        <file src="..\bin\Release\Ara2.AraGrid.dll" target="lib\net40\Ara2.AraGrid.dll" />
+    </files>
+</package>
