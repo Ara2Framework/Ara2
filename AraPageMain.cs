@@ -71,7 +71,7 @@ namespace Ara2
         /// Define o Window Main 
         /// </summary>
         /// <returns> Retorne o WindowMain</returns>
-        public virtual Ara2.Components.WindowMain GetWindowMain(ISession Session)
+        public virtual Ara2.Components.IAraWindowMain GetWindowMain(ISession Session)
         {
             throw new Exception("Falta declarar o GetWindowMain em AraPageMain");
         }
@@ -522,7 +522,7 @@ namespace Ara2
             Response.Write("$( document ).ready(function() {\n");
             Response.Write(" Ara = new ClassAra('" + vTick.Session.Id + "','" + Page.Request.Url.AbsolutePath + "'); \n");
 
-            WindowMain WindowMain=null;
+            IAraWindowMain WindowMain=null;
             try
             {
                 try

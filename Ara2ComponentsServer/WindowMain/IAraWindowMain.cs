@@ -60,5 +60,6 @@ namespace Ara2.Components
         void AlertYesOrNo<T>(string vM, T EventReturn, params object[] vParametros);
         void AsynchronousFunction<T>(T vEventReturn, params object[] vParametros) ;
         void AlertGetString<T>(string vM, string vValuedefault, T EventReturn, params object[] vParametros);
+        string GetBodyHtml();
     }
 }

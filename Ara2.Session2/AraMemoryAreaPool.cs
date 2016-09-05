@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ara2.Memory;
 
-namespace Ara2.Session1
+namespace Ara2.Session2
 {
     public class AraMemoryAreaPool : IAraMemoryArea
     {
@@ -31,19 +31,18 @@ namespace Ara2.Session1
         {
             return NewSession(AraPageMain, GetNewIdSession(), 0);
         }
-
-        public ISession NewSession(AraPageMain AraPageMain, string vIdSession, int vAppId)
+        
+        public ISession NewSession(AraPageMain AraPageMain,string vIdSession ,int vAppId)
         {
             CloseSession(vIdSession);
-            ISession TmpSession = new Ara2.Session1.Session(AraPageMain, vIdSession, vAppId);
-            lock(_Sessions)
+            ISession TmpSession = new Ara2.Session2.Session(AraPageMain, vIdSession, vAppId);
+            lock (_Sessions)
             {
                 _Sessions.Add(TmpSession.Id, new _Session()
                 {
                     Session = TmpSession
                 });
             }
-
             TmpSession.ExecuteLoad();
             TmpSession.SaveSession();
             TmpSession.LastCall = DateTime.Now;
