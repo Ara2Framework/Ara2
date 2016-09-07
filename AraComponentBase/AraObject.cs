@@ -111,17 +111,33 @@ namespace Ara2.Components
         }
 
 
-        
+        // Flag: Has Dispose already been called?
+        bool disposed = false;
+
         public void Dispose()
         {
-            foreach (IAraObject CompF in Childs)
-            {
-                CompF.Dispose();
-            }
-
-            Tick.GetTick().Session.DellObject(this);
+            Dispose(true);
+            //GC.SuppressFinalize(this);
         }
 
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                disposed = true;
+
+                foreach (IAraObject CompF in Childs)
+                {
+                    CompF.Dispose();
+                }
+
+                Tick.GetTick().Session.DellObject(this);
+            }
+        }
 
 
 

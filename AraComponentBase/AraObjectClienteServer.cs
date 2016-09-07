@@ -60,16 +60,12 @@ namespace Ara2.Components
         AraContainer AraContainer;
         // (vObj==null? Tick.GetTick().Session.GetNewID():vObj.Name)
 
-        public AraObjectClienteServer(IAraObject vObj, IAraObject vConteinerFather) :
-            this(vObj.InstanceID, vConteinerFather)
-        {
-        }
+        //public AraObjectClienteServer(IAraObject vObj, IAraObject vConteinerFather) :
+        //    this(vObj.InstanceID, vConteinerFather)
+        //{
+        //}
 
-        public AraObjectClienteServer(string vName, IAraObject vConteinerFather) :
-            base(vName,vConteinerFather)
-        {
-            Construct();
-        }
+        
 
         public AraObjectClienteServer(IAraObject vObj, IAraObject vConteinerFather, string vTypeNameJS) :
             this((vObj==null?null:vObj.InstanceID), vConteinerFather, vTypeNameJS)
@@ -82,24 +78,17 @@ namespace Ara2.Components
         }
 
         public AraObjectClienteServer(string vName, IAraObject vConteinerFather, string vTypeNameJS) :
-            this(vName, vConteinerFather)
-        {
-            Tick.GetTick().Session.AddObject(this,vConteinerFather, vTypeNameJS);
-        }
-
-        private void Construct()
+            base(vName, vConteinerFather)
         {
             this.SetProperty += AraComponent_SetProperty;
 
             //if (ConteinerFather != null && ConteinerFather is IAraContainerClient)
             //    ((IAraContainerClient)ConteinerFather).AddChild(this);
+            Tick.GetTick().Session.AddObject(this, vConteinerFather, vTypeNameJS);
 
             AraContainer = new AraContainer();
         }
-
         
-
-
         public void TickScriptCall()
         {
             Tick.GetTick().Script.CallObject(this);

@@ -70,6 +70,9 @@ namespace Ara2.Session2
         #endregion
 
         #region Add Object
+
+        //Dictionary<string, IAraObject> Objetos = new Dictionary<string, IAraObject>();
+
         public void AddObject(IAraWindowMain WindowMain)
         {
             AddObject(WindowMain, null);
@@ -77,10 +80,17 @@ namespace Ara2.Session2
 
         public void AddObject(IAraObject vObj, IAraObject vConteinerFather)
         {
-            if (vConteinerFather!=null)
-                HttpRuntime.Cache.Insert(vObj.InstanceID, vObj, new System.Web.Caching.CacheDependency(null,new string[] { vConteinerFather.InstanceID }));
+            if (HttpRuntime.Cache.Get(vObj.InstanceID) != null)
+                HttpRuntime.Cache.Remove(vObj.InstanceID);
+
+            if (vConteinerFather != null)
+                HttpRuntime.Cache.Insert(vObj.InstanceID, vObj, new System.Web.Caching.CacheDependency(null, new string[] { vConteinerFather.InstanceID }));
             else
                 HttpRuntime.Cache.Insert(vObj.InstanceID, vObj);
+            //if (!Objetos.ContainsKey(vObj.InstanceID))
+            //    Objetos.Add(vObj.InstanceID, vObj);
+            //else
+            //    Objetos[vObj.InstanceID]=vObj;
         }
 
         public void AddObject(IAraObject vObj, IAraObject vConteinerFather, string vTypeNameJS)
@@ -99,7 +109,15 @@ namespace Ara2.Session2
 
         public void DellObject(IAraObject vObj)
         {
+            string vInstanceID = vObj.InstanceID;
+
+            if (vObj.ConteinerFather != null)
+                vObj.ConteinerFather.RemuveChild(vObj);
+            Tick vTick = Tick.GetTick();
+            vTick.Script.Send(" Ara.DelObject('" + AraTools.StringToStringJS(vInstanceID) + "');\n");
+            //Objetos.Remove(vInstanceID);
             HttpRuntime.Cache.Remove(vObj.InstanceID);
+            vTick.AraPageMain.MemoryArea.CloseObject(this, vInstanceID);
         }
 
         public void ExecuteLoad()
@@ -109,14 +127,19 @@ namespace Ara2.Session2
 
         public string GetNewID()
         {
-            //return Guid.NewGuid().ToString().Replace("-","_");
-            return "A" + this.AppId + "O" + Tick.GetTick().AraPageMain.MemoryArea.GetNewIdObject(this);
+            return Guid.NewGuid().ToString().Replace("-","_");
+            //return "A" + this.AppId + "O" + Tick.GetTick().AraPageMain.MemoryArea.GetNewIdObject(this);
         }
 
         public IAraObject GetObject(string vInstanceID)
         {
             try
             {
+                //IAraObject vTmp;
+                //if (Objetos.TryGetValue(vInstanceID, out vTmp))
+                //    return vTmp;
+                //else
+                //    return null;
                 return (IAraObject)HttpRuntime.Cache.Get(vInstanceID);
             }
             catch
@@ -137,12 +160,11 @@ namespace Ara2.Session2
 
         public void Dispose()
         {
-
             foreach (var vObj in HttpRuntime.Cache)
             {
                 if (vObj is IAraObject)
                 {
-                    HttpRuntime.Cache.Remove(((IAraObject)vObj).InstanceID);
+                    DellObject((IAraObject)vObj);
                 }
             }
         }
