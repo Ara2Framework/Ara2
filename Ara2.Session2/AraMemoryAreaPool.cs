@@ -131,15 +131,24 @@ namespace Ara2.Session2
             }
         }
 
+        DateTime UltimaLimpesa = DateTime.Now;
         public void CleanInactiveSession()
         {
-            var vTmpCache = HttpRuntime.Cache.GetEnumerator();
-            while (vTmpCache.MoveNext())
+            lock(this)
             {
-                if (vTmpCache.Key.ToString().StartsWith(PrefixSession))
+                if ((DateTime.Now - UltimaLimpesa) >= SessionTimeOut)
                 {
-                    if (DateTime.Now - ((ISession)vTmpCache.Value).LastCall >= SessionTimeOut)
-                        CloseSession(((ISession)vTmpCache.Value));
+                    UltimaLimpesa = DateTime.Now;
+
+                    var vTmpCache = HttpRuntime.Cache.GetEnumerator();
+                    while (vTmpCache.MoveNext())
+                    {
+                        if (vTmpCache.Key.ToString().StartsWith(PrefixSession))
+                        {
+                            if (DateTime.Now - ((ISession)vTmpCache.Value).LastCall >= SessionTimeOut)
+                                CloseSession(((ISession)vTmpCache.Value));
+                        }
+                    }
                 }
             }
         }
