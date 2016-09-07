@@ -223,7 +223,7 @@ namespace Ara2.Components
             
             
             Tick vTick = Tick.GetTick();
-            vTick.Script.Send(" Ara.Tools.WarningLoading(" + vTick.Session.AppId + "," + vKey + ",'" + AraTools.StringToStringJS(vMessage) + "'); \n");
+            vTick.Script.Send(" Ara.Tools.WarningLoading(0," + vKey + ",'" + AraTools.StringToStringJS(vMessage) + "'); \n");
         }
 
         public void RumActionWaitLoading(int vKey)
@@ -371,7 +371,7 @@ namespace Ara2.Components
 
             Tick vTick = Tick.GetTick();
             vTick.Script.Send(" alert('" + AraTools.StringToStringJS(vM) + "'); \n");
-            vTick.Script.Send(" Ara.Tick.Send(4, " + vTick.Session.AppId + ",'" + this.InstanceID + "', 'Alert', { key: " + TmpKey + "});");
+            vTick.Script.Send(" Ara.Tick.Send(4, 0,'" + this.InstanceID + "', 'Alert', { key: " + TmpKey + "});");
         }
 
         public void RunEventAlert(int vKey)
@@ -433,7 +433,7 @@ namespace Ara2.Components
 
             Tick vTick = Tick.GetTick();
             vTick.Script.Send(" var vAlertResu = confirm('" + AraTools.StringToStringJS(vM) + "');");
-            vTick.Script.Send(" setTimeout(function(){ Ara.Tick.Send(4, " + vTick.Session.AppId + ", '" + this.InstanceID + "', 'AlertYesOrNo', { key: " + TmpKey + ",resul:vAlertResu});},1000);");
+            vTick.Script.Send(" setTimeout(function(){ Ara.Tick.Send(4, 0, '" + this.InstanceID + "', 'AlertYesOrNo', { key: " + TmpKey + ",resul:vAlertResu});},1000);");
         }
 
         private void RunEventAlertYesOrNo(int vKey, bool vResul)
@@ -493,7 +493,7 @@ namespace Ara2.Components
             });
 
             Tick vTick = Tick.GetTick();
-            vTick.Script.Send(" Ara.Tick.Send(1, " + vTick.Session.AppId + ", '" + this.InstanceID + "', 'AsynchronousFunction', { key: " + TmpKey + " });");
+            vTick.Script.Send(" Ara.Tick.Send(1, 0, '" + this.InstanceID + "', 'AsynchronousFunction', { key: " + TmpKey + " });");
         }
 
         
@@ -559,7 +559,7 @@ namespace Ara2.Components
             });
 
             Tick vTick = Tick.GetTick();
-            vTick.Script.Send(" Ara.Tick.Send(4, " + vTick.Session.AppId + ", '" + this.InstanceID + "', 'AlertGetString', { key: " + TmpKey + ",resul:prompt('" + AraTools.StringToStringJS(vM) + "','" + AraTools.StringToStringJS(vValuedefault) + "')});");
+            vTick.Script.Send(" Ara.Tick.Send(4, 0, '" + this.InstanceID + "', 'AlertGetString', { key: " + TmpKey + ",resul:prompt('" + AraTools.StringToStringJS(vM) + "','" + AraTools.StringToStringJS(vValuedefault) + "')});");
         }
 
         private void RunEventAlertGetString(int vKey, string vResul)

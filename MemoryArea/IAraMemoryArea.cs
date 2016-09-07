@@ -19,7 +19,7 @@ namespace Ara2.Memory
         
 
         ISession NewSession(AraPageMain AraPageMain);
-        ISession NewSession(AraPageMain araPageMain, string vSession, int AppId);
+        ISession NewSession(AraPageMain araPageMain, string vSession);
     }
 
 }

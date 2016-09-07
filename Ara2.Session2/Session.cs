@@ -12,16 +12,15 @@ namespace Ara2.Session2
     {
         const string PrefixObject = "O_";
 
-        public Session(AraPageMain vAraPageMain, string vSession,int vAppId)
+        public Session(AraPageMain vAraPageMain, string vSession)
         {
             AraPageMain = vAraPageMain;
             Id = vSession;
-            AppId = vAppId;
             OnReceivesInternalEventAfter = new AraEvent<Action<IAraObjectClienteServer, string>>();
             OnReceivesInternalEventBefore = new AraEvent<Action<IAraObjectClienteServer, string>>();
         }
 
-        public int AppId { get; set; }
+        
 
         public string Id { get; set; }
 
@@ -49,7 +48,7 @@ namespace Ara2.Session2
             {
                 Tick vTick = Tick.GetTick();
                 _JsLoad.Add(vFile);
-                vTick.Script.Send("Ara.AraClass.LoadClass(" + vTick.Session.AppId + "," + vTick.Id + ",'" + AraTools.StringToStringJS(vTick.AraPageMain.GetUrlRedirectFiles(vFile)) + "',function () {\n");
+                vTick.Script.Send("Ara.AraClass.LoadClass(0," + vTick.Id + ",'" + AraTools.StringToStringJS(vTick.AraPageMain.GetUrlRedirectFiles(vFile)) + "',function () {\n");
                 vTick.Script.GetNewLevel();
 
                 vTick.Script.Send(vTick.Script.Level - 1, " ); \n ");
@@ -103,7 +102,7 @@ namespace Ara2.Session2
 
             AddObject(vObj, vConteinerFather);
             Tick vTick = Tick.GetTick();
-            vTick.Script.Send(" Ara.AddObject(" + vTick.Session.AppId + ",'" + vObj.InstanceID + "'," + (vTypeNameJS != null ? "'" + vTypeNameJS + "'" : "null") + "," + ConteinerFatherName + "); \n");
+            vTick.Script.Send(" Ara.AddObject(0,'" + vObj.InstanceID + "'," + (vTypeNameJS != null ? "'" + vTypeNameJS + "'" : "null") + "," + ConteinerFatherName + "); \n");
         }
         #endregion
 

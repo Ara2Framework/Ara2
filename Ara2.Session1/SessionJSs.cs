@@ -44,7 +44,7 @@ namespace Ara2.Session1
             {
                 Tick vTick = Tick.GetTick();
                 _JsLoad.Add(vFile,new SJsLoad(vFile, vTick.Id));
-                vTick.Script.Send("Ara.AraClass.LoadClass(" + vTick.Session.AppId + "," + vTick.Id + ",'" + AraTools.StringToStringJS(vTick.AraPageMain.GetUrlRedirectFiles(vFile)) + "',function () {\n");
+                vTick.Script.Send("Ara.AraClass.LoadClass(0," + vTick.Id + ",'" + AraTools.StringToStringJS(vTick.AraPageMain.GetUrlRedirectFiles(vFile)) + "',function () {\n");
                 vTick.Script.GetNewLevel();
 
                 vTick.Script.Send(vTick.Script.Level - 1, " ); \n ");

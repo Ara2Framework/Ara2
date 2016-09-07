@@ -31,13 +31,13 @@ namespace Ara2.Session2
 
         public ISession NewSession(AraPageMain AraPageMain)
         {
-            return NewSession(AraPageMain, GetNewIdSession(), 0);
+            return NewSession(AraPageMain, GetNewIdSession());
         }
         
-        public ISession NewSession(AraPageMain AraPageMain,string vIdSession ,int vAppId)
+        public ISession NewSession(AraPageMain AraPageMain,string vIdSession)
         {
             CloseSession(vIdSession);
-            ISession TmpSession = new Ara2.Session2.Session(AraPageMain, vIdSession, vAppId);
+            ISession TmpSession = new Session(AraPageMain, vIdSession);
             HttpRuntime.Cache.Insert(TmpSession.Id, TmpSession);
             TmpSession.ExecuteLoad();
             TmpSession.SaveSession();

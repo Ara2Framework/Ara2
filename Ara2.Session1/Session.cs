@@ -246,7 +246,7 @@ namespace Ara2.Session1
 
             AddObject(vObj, vConteinerFather);
             Tick vTick = Tick.GetTick();
-            vTick.Script.Send(" Ara.AddObject(" + vTick.Session.AppId + ",'" + vObj.InstanceID + "'," + (vTypeNameJS != null ? "'" + vTypeNameJS + "'" : "null") + "," + ConteinerFatherName + "); \n");
+            vTick.Script.Send(" Ara.AddObject(0,'" + vObj.InstanceID + "'," + (vTypeNameJS != null ? "'" + vTypeNameJS + "'" : "null") + "," + ConteinerFatherName + "); \n");
         }
 
         public void DellObject(IAraObject vObj)

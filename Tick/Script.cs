@@ -151,7 +151,7 @@ namespace Ara2
         public void CustomerAnalysisEnd(string NameAnalysis)
         {
             Tick vTick = Tick.GetTick();
-            vTick.Script.Send(" Ara.Tick.Send(4, " + vTick.Session.AppId + ", 'Ara', 'AnalysisResult', {name:'" + NameAnalysis + "', Analysis: JSON.stringify(Analysis" + NameAnalysis + ")});\n");
+            vTick.Script.Send(" Ara.Tick.Send(4, 0, 'Ara', 'AnalysisResult', {name:'" + NameAnalysis + "', Analysis: JSON.stringify(Analysis" + NameAnalysis + ")});\n");
         }
     }
 }

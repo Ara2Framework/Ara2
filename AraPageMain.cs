@@ -223,53 +223,31 @@ namespace Ara2
 
                 if (Request.Params["ARA2"] == "1")
                 {
-                    if (Convert.ToInt32(Request["AppId"]) == Session.AppId)
+                    try
+                    {
+                        RecebeTick();
+                    }
+                    catch (Exception err)
+                    {
+                        ExceptionAplication(err);
+                    }
+                    finally
                     {
                         try
                         {
-                            RecebeTick();
+                            vTick.Session.SaveSession();
                         }
                         catch (Exception err)
                         {
-                            ExceptionAplication(err);
+                            ExceptionAplication(new Exception("Erro on save Session.\n" + err.Message));
                         }
-                        finally
-                        {
-                            try
-                            {
-                                vTick.Session.SaveSession();
-                            }
-                            catch(Exception err) 
-                            {
-                                ExceptionAplication(new Exception("Erro on save Session.\n" + err.Message));
-                            }
-                            Tick.DellTick(vTick);
-                        }
+                        Tick.DellTick(vTick);
                     }
-                    else
-                    {
-                        try
-                        {
-                            // Envia para servidor corespondente
-                        }
-                        catch (Exception err)
-                        {
-                            AraTools.Alert(err.Message);
-                        }
-                        finally
-                        {
-                            try
-                            {
-                                vTick.Session.SaveSession();
-                            }
-                            catch { }
-                            Tick.DellTick(vTick);
-                        }
-                    }
+
                 }
                 else // Envia Kernel
                 {
-                    if (!File.Exists(Path.Combine( AraTools.GetPath() + "AraRedirect.ara")))
+                    if (!File.Exists(Path.Combine(AraTools.GetPath() + "AraRedirect.ara")))
                     {
                         if (getInternetExplorerVersion() == null || getInternetExplorerVersion() >= 8)
                         {
@@ -291,14 +269,14 @@ namespace Ara2
                     }
                     else
                     {
-                        Random RND =new Random();
-                        int RNDVal = RND.Next(1,100000);
+                        Random RND = new Random();
+                        int RNDVal = RND.Next(1, 100000);
 
                         string vUrl = File.ReadAllText(Path.Combine(AraTools.GetPath() + "AraRedirect.ara")).Replace("$RND$", RNDVal.ToString()).Replace("'", "\\'");
                         Response.Write("<script> window.location ='" + vUrl + "'; </script>");
                     }
-                    
-                   
+
+
                 }
 
                 
@@ -528,7 +506,7 @@ namespace Ara2
                 try
                 {
                     //Reseta Session
-                    vTick.Session = this.MemoryArea.NewSession(this, vTick.Session.Id, vTick.Session.AppId);
+                    vTick.Session = this.MemoryArea.NewSession(this, vTick.Session.Id);
                     vTick.Script.RumLoad();
                 }
                 catch (Exception err)

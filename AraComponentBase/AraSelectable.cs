@@ -40,7 +40,7 @@ namespace Ara2.Components
                             var vIds = [];
                             var vTmp = $('.selectable_" + this.InstanceID + @".ui-selected').map(function(){ vIds.push($(this).attr('id')); });
                             $('.selectable_" + this.InstanceID + @".ui-selected').removeClass('ui-selected');
-                            Ara.Tick.Send(4, " + vTick.Session.AppId + @", 'Ara', 'SELECTEDSTOP', {id:'" + this.InstanceID + @"',ObjsInstanceID:vIds.toString()});
+                            Ara.Tick.Send(4, 0, 'Ara', 'SELECTEDSTOP', {id:'" + this.InstanceID + @"',ObjsInstanceID:vIds.toString()});
                         }
 /*
                         selected:function( event, ui ) {
@@ -48,7 +48,7 @@ namespace Ara2.Components
                             if (TmpId!="""" && TmpId!=""" + _ObjectNameHtml + @""")
                             {
                                 if (Ara.GetObject(TmpId)!=null)
-                                    Ara.Tick.Send(4, " + vTick.Session.AppId + @", 'Ara', 'Selected', {id:'" + this.InstanceID + @"',idselect:TmpId});
+                                    Ara.Tick.Send(4, 0, 'Ara', 'Selected', {id:'" + this.InstanceID + @"',idselect:TmpId});
                             }                           
                         },
                         unselected:function( event, ui ) {
@@ -56,7 +56,7 @@ namespace Ara2.Components
                             if (TmpId!="""" && TmpId!=""" + _ObjectNameHtml + @""")
                             {
                                 if (Ara.GetObject(TmpId)!=null)
-                                    Ara.Tick.Send(4, " + vTick.Session.AppId + @", 'Ara', 'UnSelected', {id:'" + this.InstanceID + @"',idselect:TmpId});
+                                    Ara.Tick.Send(4, 0, 'Ara', 'UnSelected', {id:'" + this.InstanceID + @"',idselect:TmpId});
                             }                           
                         }
 */

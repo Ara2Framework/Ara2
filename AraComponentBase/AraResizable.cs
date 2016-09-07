@@ -42,7 +42,7 @@ namespace Ara2.Components
                         stop:function( event, ui ) {
                             Ara.GetObject('" + this.ConteinerFather.InstanceID + @"').SetWidth(parseInt(ui.size.width,10) + 'px');
                             Ara.GetObject('" + this.ConteinerFather.InstanceID + @"').SetHeight(parseInt(ui.size.height,10) + 'px');
-                            Ara.Tick.Send(4, " + vTick.Session.AppId + @", 'Ara', 'OnResize', {id:'" + this.InstanceID + @"'});
+                            Ara.Tick.Send(4, 0, 'Ara', 'OnResize', {id:'" + this.InstanceID + @"'});
                         }
                     }
                 );

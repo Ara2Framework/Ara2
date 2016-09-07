@@ -54,7 +54,7 @@ namespace Ara2.Components
                             Ara.GetObject('" + this.ConteinerFather.InstanceID + @"').SetTop(parseInt(ui.position.top,10) + 'px');
                             Ara.GetObject('" + this.ConteinerFather.InstanceID + @"').SetLeft(parseInt(ui.position.left,10) + 'px');
                             
-                            Ara.Tick.Send(4, " + vTick.Session.AppId + @", 'Ara', 'OnDraggable', {id:'" + this.InstanceID + @"',OldTop:parseInt(ui.originalPosition.top,10),OldLeft:parseInt(ui.originalPosition.left,10)});
+                            Ara.Tick.Send(4, 0, 'Ara', 'OnDraggable', {id:'" + this.InstanceID + @"',OldTop:parseInt(ui.originalPosition.top,10),OldLeft:parseInt(ui.originalPosition.left,10)});
                             
                         }
                     }

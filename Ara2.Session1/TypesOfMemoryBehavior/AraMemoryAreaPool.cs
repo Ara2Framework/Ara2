@@ -29,13 +29,13 @@ namespace Ara2.Session1
 
         public ISession NewSession(AraPageMain AraPageMain)
         {
-            return NewSession(AraPageMain, GetNewIdSession(), 0);
+            return NewSession(AraPageMain, GetNewIdSession());
         }
 
-        public ISession NewSession(AraPageMain AraPageMain, string vIdSession, int vAppId)
+        public ISession NewSession(AraPageMain AraPageMain, string vIdSession)
         {
             CloseSession(vIdSession);
-            ISession TmpSession = new Ara2.Session1.Session(AraPageMain, vIdSession, vAppId);
+            ISession TmpSession = new Session(AraPageMain, vIdSession);
             lock(_Sessions)
             {
                 _Sessions.Add(TmpSession.Id, new _Session()

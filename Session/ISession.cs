@@ -20,7 +20,6 @@ namespace Ara2
     public interface ISession : IDisposable
     {
         string Id { get; set; }
-        int AppId { get; set; }
         DateTime LastCall { get; set; }
 
         AraEvent<Action<IAraObjectClienteServer, string>> OnReceivesInternalEventBefore { get; set; }
