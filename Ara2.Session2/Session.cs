@@ -10,6 +10,8 @@ namespace Ara2.Session2
 {
     public class Session : ISession
     {
+        const string PrefixObject = "O_";
+
         public Session(AraPageMain vAraPageMain, string vSession,int vAppId)
         {
             AraPageMain = vAraPageMain;
@@ -31,7 +33,6 @@ namespace Ara2.Session2
 
 
         AraPageMain AraPageMain;
-        IAraWindowMain _WindowMain;
         public IAraWindowMain WindowMain
         {
             get
@@ -115,9 +116,7 @@ namespace Ara2.Session2
                 vObj.ConteinerFather.RemuveChild(vObj);
             Tick vTick = Tick.GetTick();
             vTick.Script.Send(" Ara.DelObject('" + AraTools.StringToStringJS(vInstanceID) + "');\n");
-            //Objetos.Remove(vInstanceID);
             HttpRuntime.Cache.Remove(vObj.InstanceID);
-            //vTick.AraPageMain.MemoryArea.CloseObject(this, vInstanceID);
         }
 
         public void ExecuteLoad()
@@ -128,19 +127,13 @@ namespace Ara2.Session2
 
         public string GetNewID()
         {
-            return Guid.NewGuid().ToString().Replace("-","_");
-            //return "A" + this.AppId + "O" + Tick.GetTick().AraPageMain.MemoryArea.GetNewIdObject(this);
+            return string.Concat(PrefixObject, Guid.NewGuid().ToString().Replace("-","_"));
         }
 
         public IAraObject GetObject(string vInstanceID)
         {
             try
             {
-                //IAraObject vTmp;
-                //if (Objetos.TryGetValue(vInstanceID, out vTmp))
-                //    return vTmp;
-                //else
-                //    return null;
                 return (IAraObject)HttpRuntime.Cache.Get(vInstanceID);
             }
             catch
