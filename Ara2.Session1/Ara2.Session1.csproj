@@ -52,6 +52,7 @@
     <Compile Include="SessionCsss.cs" />
     <Compile Include="SessionJSs.cs" />
     <Compile Include="SessionObject.cs" />
+    <Compile Include="TypesOfMemoryBehavior\IAraMemoryAreaSession1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ara2.csproj">

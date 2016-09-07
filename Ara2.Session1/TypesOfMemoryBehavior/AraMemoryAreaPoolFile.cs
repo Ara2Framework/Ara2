@@ -9,7 +9,7 @@ using Ara2.Memory;
 
 namespace Ara2.Session1
 {
-    public class AraMemoryAreaPoolFile : IAraMemoryArea
+    public class AraMemoryAreaPoolFile : IAraMemoryAreaSession1
     {
 
         /// <summary>

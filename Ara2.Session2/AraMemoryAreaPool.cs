@@ -7,13 +7,15 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Ara2.Memory;
+using System.Web;
 
 namespace Ara2.Session2
 {
     public class AraMemoryAreaPool : IAraMemoryArea
     {
-
         public TimeSpan SessionTimeOut = new TimeSpan(0,2,0);
+
+        const string PrefixSession = "S_";
 
         public AraMemoryAreaPool(TimeSpan vSessionTimeOut):
             this()
@@ -36,13 +38,7 @@ namespace Ara2.Session2
         {
             CloseSession(vIdSession);
             ISession TmpSession = new Ara2.Session2.Session(AraPageMain, vIdSession, vAppId);
-            lock (_Sessions)
-            {
-                _Sessions.Add(TmpSession.Id, new _Session()
-                {
-                    Session = TmpSession
-                });
-            }
+            HttpRuntime.Cache.Insert(TmpSession.Id, TmpSession);
             TmpSession.ExecuteLoad();
             TmpSession.SaveSession();
             TmpSession.LastCall = DateTime.Now;
@@ -50,44 +46,57 @@ namespace Ara2.Session2
             return TmpSession;
         }
 
-        Random Rnd = new Random();
+        //Random Rnd = new Random();
         //long _NewIdSession = 0 ;
 
         public string GetNewIdSession()
         {
-            lock (_Sessions)
-			{
-                //_NewIdSession++;
-                string vSessionId;
-                do
-                {
-                    vSessionId = DateTime.Now.Ticks + "_" + Rnd.Next();
-                } while (_Sessions.ContainsKey(vSessionId));
+            //         lock (_Sessions)
+            //{
+            //             //_NewIdSession++;
+            //             string vSessionId;
+            //             do
+            //             {
+            //                 vSessionId = DateTime.Now.Ticks + "_" + Rnd.Next();
+            //             } while (_Sessions.ContainsKey(vSessionId));
 
-                return vSessionId;
-			}
+            //             return vSessionId;
+            //}
+            return string.Concat(PrefixSession, Guid.NewGuid().ToString().Replace("-", "_"));
         }
 
 
-        Dictionary<string, _Session> _Sessions = new Dictionary<string, _Session>();
+        //Dictionary<string, _Session> _Sessions = new Dictionary<string, _Session>();
 
         public string[] GetSessionIDs()
         {
-            return _Sessions.Keys.ToArray();
+            List<string> vSessionsIDs = new List<string>();
+            var vTmpCache = HttpRuntime.Cache.GetEnumerator();
+            while(vTmpCache.MoveNext())
+            {
+                if (vTmpCache.Key.ToString().StartsWith(PrefixSession))
+                    vSessionsIDs.Add(vTmpCache.Key.ToString());
+            }
+
+            return vSessionsIDs.ToArray();
         }
 
         public ISession GetSession(string vIdSession)
         {
             try
             {
-                _Session TmpSessions = null;
-                if (_Sessions.TryGetValue(vIdSession, out TmpSessions))
-                {
-                    TmpSessions.Session.LastCall = DateTime.Now;
-                    return TmpSessions.Session;
-                }
-                else
-                    return null;
+                var vTmpS = (ISession)HttpRuntime.Cache.Get(vIdSession);
+                if(vTmpS!=null) vTmpS.LastCall = DateTime.Now;
+                return vTmpS;
+
+                //_Session TmpSessions = null;
+                //if (_Sessions.TryGetValue(vIdSession, out TmpSessions))
+                //{
+                //    TmpSessions.Session.LastCall = DateTime.Now;
+                //    return TmpSessions.Session;
+                //}
+                //else
+                //    return null;
             }
             catch
             {
@@ -96,34 +105,41 @@ namespace Ara2.Session2
         }
         public void SaveSession(ISession vByts)
         {
-            lock (_Sessions)
-            {
-                string vSessionId = vByts.Id;
-                if (!_Sessions.ContainsKey(vSessionId))
-                    _Sessions.Add(vSessionId, new _Session(){
-                        Session = vByts
-                    });
-            }
+            //lock (_Sessions)
+            //{
+            //    string vSessionId = vByts.Id;
+            //    if (!_Sessions.ContainsKey(vSessionId))
+            //        _Sessions.Add(vSessionId, new _Session(){
+            //            Session = vByts
+            //        });
+            //}
         }
 
         public int CountSession
         {
             get
             {
-				lock (_Sessions)
-            	{
-                	return _Sessions.Count;
-				}
+                int vCount=0;
+                var vTmpCache = HttpRuntime.Cache.GetEnumerator();
+                while (vTmpCache.MoveNext())
+                {
+                    if (vTmpCache.Key.ToString().StartsWith(PrefixSession))
+                        vCount++;
+                }
+
+                return vCount;
             }
         }
 
         public void CleanInactiveSession()
         {
-            lock (_Sessions)
+            var vTmpCache = HttpRuntime.Cache.GetEnumerator();
+            while (vTmpCache.MoveNext())
             {
-                foreach (var Id in _Sessions.Values.Where(a => a == null || DateTime.Now - a.Session.LastCall >= SessionTimeOut).Select(a => a.Session.Id).ToArray())
+                if (vTmpCache.Key.ToString().StartsWith(PrefixSession))
                 {
-                    CloseSession(Id);
+                    if (DateTime.Now - ((ISession)vTmpCache.Value).LastCall >= SessionTimeOut)
+                        CloseSession(((ISession)vTmpCache.Value));
                 }
             }
         }
@@ -132,131 +148,150 @@ namespace Ara2.Session2
         {
             try
             {
-                lock (_Sessions)
-                {
-                    try
-                    {
-                        _Session vTmp_Session;
-                        if (_Sessions.TryGetValue(vIdSession,out vTmp_Session))
-                            vTmp_Session.Dispose();
-                    }
-                    catch { }
+                CloseSession(GetSession(vIdSession));
+                //lock (_Sessions)
+                //{
+                //    try
+                //    {
+                //        _Session vTmp_Session;
+                //        if (_Sessions.TryGetValue(vIdSession,out vTmp_Session))
+                //            vTmp_Session.Dispose();
+                //    }
+                //    catch { }
 
-                    _Sessions.Remove(vIdSession);
-                }
+                //    _Sessions.Remove(vIdSession);
+                //}
             }
             catch { }
         }
 
-        public string GetNewIdObject(ISession Session)
-        {
-            return _Sessions[Session.Id].GetNewIdObject().ToString();
-        }
-
-        private class _Session:IDisposable
-        {
-            private int NewIdObject;
-            public ISession Session;
-            public Dictionary<string, _SessionObject> Objects = new Dictionary<string,_SessionObject>();
-
-            public int GetNewIdObject()
-            {
-                int vTmp;
-                lock(this)
-                {
-                    vTmp = NewIdObject;
-                    NewIdObject++;
-                }
-                return vTmp;
-            }
-            public _SessionObject GetObjectOrNull(string vInstanceID)
-            {
-                try
-                {
-                    _SessionObject vTmpObj;
-                    if (Objects.TryGetValue(vInstanceID,out vTmpObj))
-                        return vTmpObj;
-                    else
-                        return null;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-            public void AddObject(Ara2.Components.IAraObject vObject)
-            {
-                lock (Objects)
-                {
-                    if (!@Objects.ContainsKey(vObject.InstanceID))
-                        Objects.Add(vObject.InstanceID, new _SessionObject()
-                        {
-                            IdSession = Session.Id,
-                            InstanceID = vObject.InstanceID,
-                            data = vObject
-                        });
-                    else
-                        Objects[vObject.InstanceID].data = vObject;
-                }
-            }
-
-            public void CloseObject(string InstanceID)
-            {
-                lock(Objects)
-                {
-                    Objects.Remove(InstanceID);
-                }
-            }
-
-            public void Dispose()
-            {
-                Objects.Clear();
-                Session.Dispose();
-            }
-        }
-
-        private class _SessionObject
-        {
-            public string IdSession;
-            public string InstanceID;
-            public Ara2.Components.IAraObject data;
-        }
-
-        public ISessionObject[] GetObjects(ISession Session)
+        public void CloseSession(ISession Session)
         {
             try
             {
-                return _Sessions[Session.Id].Objects.Values.Select(a => new SessionObject(Session, a.data)).ToArray();
+                if (Session != null)
+                {
+                    lock (Session)
+                    {
+                        string vIdSession = Session.Id;
+                        Session.Dispose();
+                        HttpRuntime.Cache.Remove(vIdSession);
+                    }
+                }
+
             }
-            catch
-            {
-                return null;
-            }
+            catch { }
         }
 
-        public Ara2.Components.IAraObject GetObject(ISession Session, string InstanceID)
-        {
-            try
-            {
-                return _Sessions[Session.Id].Objects[InstanceID].data;
-            }
-            catch { return null; }
-        }
+        //public string GetNewIdObject(ISession Session)
+        //{
+        //    return _Sessions[Session.Id].GetNewIdObject().ToString();
+        //}
 
-        public void SaveObject(ISession Session, Ara2.Components.IAraObject vObject)
-        {
-            var vTmpS = _Sessions[Session.Id];
-            var vTmpO = vTmpS.GetObjectOrNull(vObject.InstanceID);
-            if (vTmpO == null)
-                vTmpS.AddObject(vObject);
-        }
+        //private class _Session:IDisposable
+        //{
+        //    private int NewIdObject;
+        //    public ISession Session;
+        //    public Dictionary<string, _SessionObject> Objects = new Dictionary<string,_SessionObject>();
+
+        //    public int GetNewIdObject()
+        //    {
+        //        int vTmp;
+        //        lock(this)
+        //        {
+        //            vTmp = NewIdObject;
+        //            NewIdObject++;
+        //        }
+        //        return vTmp;
+        //    }
+        //    public _SessionObject GetObjectOrNull(string vInstanceID)
+        //    {
+        //        try
+        //        {
+        //            _SessionObject vTmpObj;
+        //            if (Objects.TryGetValue(vInstanceID,out vTmpObj))
+        //                return vTmpObj;
+        //            else
+        //                return null;
+        //        }
+        //        catch
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //    public void AddObject(Ara2.Components.IAraObject vObject)
+        //    {
+        //        lock (Objects)
+        //        {
+        //            if (!@Objects.ContainsKey(vObject.InstanceID))
+        //                Objects.Add(vObject.InstanceID, new _SessionObject()
+        //                {
+        //                    IdSession = Session.Id,
+        //                    InstanceID = vObject.InstanceID,
+        //                    data = vObject
+        //                });
+        //            else
+        //                Objects[vObject.InstanceID].data = vObject;
+        //        }
+        //    }
+
+        //    public void CloseObject(string InstanceID)
+        //    {
+        //        lock(Objects)
+        //        {
+        //            Objects.Remove(InstanceID);
+        //        }
+        //    }
+
+        //    public void Dispose()
+        //    {
+        //        Objects.Clear();
+        //        Session.Dispose();
+        //    }
+        //}
+
+        //private class _SessionObject
+        //{
+        //    public string IdSession;
+        //    public string InstanceID;
+        //    public Ara2.Components.IAraObject data;
+        //}
+
+        //public ISessionObject[] GetObjects(ISession Session)
+        //{
+        //    try
+        //    {
+        //        return _Sessions[Session.Id].Objects.Values.Select(a => new SessionObject(Session, a.data)).ToArray();
+        //    }
+        //    catch
+        //    {
+        //        return null;
+        //    }
+        //}
+
+        //public Ara2.Components.IAraObject GetObject(ISession Session, string InstanceID)
+        //{
+        //    try
+        //    {
+        //        return _Sessions[Session.Id].Objects[InstanceID].data;
+        //    }
+        //    catch { return null; }
+        //}
+
+        //public void SaveObject(ISession Session, Ara2.Components.IAraObject vObject)
+        //{
+        //    var vTmpS = _Sessions[Session.Id];
+        //    var vTmpO = vTmpS.GetObjectOrNull(vObject.InstanceID);
+        //    if (vTmpO == null)
+        //        vTmpS.AddObject(vObject);
+        //}
 
 
-        public void CloseObject(ISession Session, string InstanceID)
-        {
+        //public void CloseObject(ISession Session, string InstanceID)
+        //{
 
-            _Sessions[Session.Id].CloseObject(InstanceID);
-        }
+        //    _Sessions[Session.Id].CloseObject(InstanceID);
+        //}
 
     }
 

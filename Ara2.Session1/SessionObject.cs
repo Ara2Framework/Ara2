@@ -41,7 +41,7 @@ namespace Ara2.Session1
             {
                 if (_Object == null)
                 {
-                    _Object = Tick.GetTick().AraPageMain.MemoryArea.GetObject(Session, _InstanceID);
+                    _Object = ((IAraMemoryAreaSession1)Tick.GetTick().AraPageMain.MemoryArea).GetObject(Session, _InstanceID);
                     _NeedSave = true;
                 }
 
@@ -86,7 +86,7 @@ namespace Ara2.Session1
                 {
                     lock (this._Object)
                     {
-                        Tick.GetTick().AraPageMain.MemoryArea.SaveObject(Session, this._Object);
+                        ((IAraMemoryAreaSession1)Tick.GetTick().AraPageMain.MemoryArea).SaveObject(Session, this._Object);
                         this._Object = null;
                     }
                 }

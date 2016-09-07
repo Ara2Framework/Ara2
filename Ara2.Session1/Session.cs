@@ -198,7 +198,7 @@ namespace Ara2.Session1
 
         public string GetNewID()
         {
-            return "A" + this.AppId + "O" + Tick.GetTick().AraPageMain.MemoryArea.GetNewIdObject(this);
+            return "A" + this.AppId + "O" + ((IAraMemoryAreaSession1)Tick.GetTick().AraPageMain.MemoryArea).GetNewIdObject(this);
         }
 
         [NonSerialized]
@@ -209,7 +209,7 @@ namespace Ara2.Session1
             get
             {
                 if (_Objects==null)
-                    _Objects = Tick.GetTick().AraPageMain.MemoryArea.GetObjects(this).ToDictionary(a=>a.InstanceID,a=>a);
+                    _Objects = ((IAraMemoryAreaSession1)Tick.GetTick().AraPageMain.MemoryArea).GetObjects(this).ToDictionary(a=>a.InstanceID,a=>a);
 
                 return _Objects;
             }
@@ -258,7 +258,7 @@ namespace Ara2.Session1
             Tick vTick = Tick.GetTick();
             vTick.Script.Send(" Ara.DelObject('" + AraTools.StringToStringJS(vInstanceID) + "');\n");
             Objects.Remove(vInstanceID);
-            vTick.AraPageMain.MemoryArea.CloseObject(this, vInstanceID);
+            ((IAraMemoryAreaSession1)vTick.AraPageMain.MemoryArea).CloseObject(this, vInstanceID);
         }
 
         public IAraObject GetObject(string vInstanceID)

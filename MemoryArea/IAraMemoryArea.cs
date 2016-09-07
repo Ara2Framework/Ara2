@@ -16,12 +16,7 @@ namespace Ara2.Memory
         void SaveSession(ISession vSession);
         void CloseSession(string vSessionId);
 
-        string GetNewIdObject(ISession Session);
-        ISessionObject[] GetObjects(ISession Session);
-        Ara2.Components.IAraObject GetObject(ISession Session, string InstanceID);
-        void SaveObject(ISession Session, Ara2.Components.IAraObject vObject);
-
-        void CloseObject(ISession Session, string InstanceID);
+        
 
         ISession NewSession(AraPageMain AraPageMain);
         ISession NewSession(AraPageMain araPageMain, string vSession, int AppId);

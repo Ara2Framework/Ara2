@@ -10,7 +10,7 @@ using Ara2.Memory;
 
 namespace Ara2.Session1
 {
-    public class AraMemoryAreaPool : IAraMemoryArea
+    public class AraMemoryAreaPool : IAraMemoryAreaSession1
     {
 
         public TimeSpan SessionTimeOut = new TimeSpan(0,2,0);

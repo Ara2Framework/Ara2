@@ -9,7 +9,7 @@ using Ara2.Memory;
 
 namespace Ara2.Session1
 {
-    public class AraMemoryAreaFile : IAraMemoryArea
+    public class AraMemoryAreaFile : IAraMemoryAreaSession1
     {
         public AraMemoryAreaFile():
             this(AraTools.GetPath())

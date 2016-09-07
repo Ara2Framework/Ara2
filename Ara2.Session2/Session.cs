@@ -86,7 +86,7 @@ namespace Ara2.Session2
             if (vConteinerFather != null)
                 HttpRuntime.Cache.Insert(vObj.InstanceID, vObj, new System.Web.Caching.CacheDependency(null, new string[] { vConteinerFather.InstanceID }));
             else
-                HttpRuntime.Cache.Insert(vObj.InstanceID, vObj);
+                HttpRuntime.Cache.Insert(vObj.InstanceID, vObj, new System.Web.Caching.CacheDependency(null, new string[] { this.Id }));
             //if (!Objetos.ContainsKey(vObj.InstanceID))
             //    Objetos.Add(vObj.InstanceID, vObj);
             //else
@@ -117,11 +117,12 @@ namespace Ara2.Session2
             vTick.Script.Send(" Ara.DelObject('" + AraTools.StringToStringJS(vInstanceID) + "');\n");
             //Objetos.Remove(vInstanceID);
             HttpRuntime.Cache.Remove(vObj.InstanceID);
-            vTick.AraPageMain.MemoryArea.CloseObject(this, vInstanceID);
+            //vTick.AraPageMain.MemoryArea.CloseObject(this, vInstanceID);
         }
 
         public void ExecuteLoad()
         {
+            
             
         }
 
