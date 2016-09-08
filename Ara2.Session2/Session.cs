@@ -153,13 +153,13 @@ namespace Ara2.Session2
 
         public void Dispose()
         {
-            foreach (var vObj in HttpRuntime.Cache)
-            {
-                if (vObj is IAraObject)
-                {
-                    DellObject((IAraObject)vObj);
-                }
-            }
+            //foreach (var vObj in HttpRuntime.Cache)
+            //{
+            //    if (vObj is IAraObject)
+            //    {
+            //        DellObject((IAraObject)vObj);
+            //    }
+            //}
         }
     }
 }
