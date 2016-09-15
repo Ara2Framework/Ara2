@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Ara2.Dev;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
@@ -20,21 +21,21 @@ namespace Ara2.Components
         }
 
         [AraDevEvent]
-        public AraEvent<AraContainer.DAddRemuveChild> AddChildBefore
+        public new AraEvent<AraContainer.DAddRemuveChild> AddChildBefore
         {
             get { return AraContainer.AddChildBefore; }
             set { AraContainer.AddChildBefore = value; }
         }
 
         [AraDevEvent]
-        public AraEvent<AraContainer.DAddRemuveChild> AddChildAfter
+        public new AraEvent<AraContainer.DAddRemuveChild> AddChildAfter
         {
             get { return AraContainer.AddChildAfter; }
             set { AraContainer.AddChildAfter = value; }
         }
 
         [AraDevEvent]
-        public AraEvent<AraContainer.DAddRemuveChild> RemuveChildBefore
+        public new AraEvent<AraContainer.DAddRemuveChild> RemuveChildBefore
         {
             get { return AraContainer.RemuveChildBefore; }
             set { AraContainer.RemuveChildBefore = value; }
@@ -42,18 +43,19 @@ namespace Ara2.Components
 
         private AraContainer AraContainer = new AraContainer();
 
-        public IAraObject AddChild(IAraObject Child)
+        public new IAraObject AddChild(IAraObject Child)
         {
             return AraContainer.AddChild(Child);
         }
 
 
-        public void RemuveChild(IAraObject Child)
+        public new void RemuveChild(IAraObject Child)
         {
             AraContainer.RemuveChild(Child);
         }
 
-        public IAraObject[] Childs
+        [JsonIgnore]
+        public new IAraObject[] Childs
         {
             get
             {
@@ -61,7 +63,7 @@ namespace Ara2.Components
             }
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             if (_ScrollBar != null)
             {

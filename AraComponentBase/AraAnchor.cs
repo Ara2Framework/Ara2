@@ -364,7 +364,7 @@ namespace Ara2.Components
         {
 
             if (destinationType == typeof(string) && value is AraAnchor)
-                return ((AraDistance)value).ToString();
+                return ((AraAnchor)value).ToString();
             else if (destinationType == typeof(string) && value is DynamicObject)
                 return ((dynamic)value).ToString();
             else

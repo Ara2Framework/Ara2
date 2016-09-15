@@ -7,3 +7,5 @@ E:\Tecnomips\Ara.Net2\Ara2_Estudo\Ara2.Session1\bin\Debug\Ara2.pdb
 E:\Tecnomips\Ara.Net2\Ara2_Estudo\Ara2.Session1\bin\Debug\System.Net.Http.xml
 E:\Tecnomips\Ara.Net2\Ara2_Estudo\Ara2.Session1\obj\Debug\Ara2.Session1.dll
 E:\Tecnomips\Ara.Net2\Ara2_Estudo\Ara2.Session1\obj\Debug\Ara2.Session1.pdb
+E:\Tecnomips\Ara.Net2\Ara2_Estudo\Ara2.Session1\bin\Debug\Newtonsoft.Json.dll
+E:\Tecnomips\Ara.Net2\Ara2_Estudo\Ara2.Session1\bin\Debug\Newtonsoft.Json.xml

@@ -7,15 +7,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ara2.Dev;
-
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
     [Serializable]
     public class AraLayouts :List<AraLayout>
     {
-        [NonSerialized]
         public AraObjectInstance<IAraContainerClient> _Object = new AraObjectInstance<IAraContainerClient>();
+
+        [JsonIgnore]
         public IAraContainerClient Object 
         {
             get {
@@ -41,6 +42,7 @@ namespace Ara2.Components
         [NonSerialized]
         public bool? _Enable = true;
 
+        [JsonIgnore]
         public bool Enable
         {
             get { 
@@ -67,6 +69,7 @@ namespace Ara2.Components
         string _LayoutCurrent = null;
 
         [AraDevPropertyLayoutCurrent(null)]
+        [JsonIgnore]
         public string LayoutCurrent
         {
             get { return _LayoutCurrent; }

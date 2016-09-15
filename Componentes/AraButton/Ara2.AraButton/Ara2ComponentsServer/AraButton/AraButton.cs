@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Ara2.Dev;
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {  
@@ -14,6 +15,14 @@ namespace Ara2.Components
     public class AraButton : AraComponentVisualAnchorConteiner, IAraDev
     {
         public object Tag;
+
+
+        [JsonConstructor]
+        private AraButton():
+            base()
+        {
+
+        }
 
         public AraButton(IAraObject ConteinerFather)
             : this(AraObjectClienteServer.Create(ConteinerFather, "a", new Dictionary<string, string> { {"href","#"}}), ConteinerFather)
@@ -55,8 +64,7 @@ namespace Ara2.Components
 
         private void Construct()
         {
-            Click = new AraComponentEvent<EventHandler>(this,"Click");
-            this.EventInternal += AraButton_EventInternal;
+            _Click = new AraComponentEvent<EventHandler>(this,"Click");
 
             this._MinWidth = 10;
             this._MinHeight = 25;
@@ -72,20 +80,30 @@ namespace Ara2.Components
         }
 
 
-        public void AraButton_EventInternal(String vFunction)
+        public virtual void EventInternal(String vFunction)
         {
             switch (vFunction.ToUpper())
             {
                 case "CLICK":
-                    if (Enabled)
-                        Click.InvokeEvent(this, new EventArgs());
+                    {
+                        if (Enabled)
+                            Click.InvokeEvent(this, new EventArgs());
+                    }
                 break;
+                default:
+                    {
+                        base.EventInternal(vFunction);
+                    }
+                    break;
             }
         }
 
         #region Eventos
+        public AraComponentEvent<EventHandler> _Click;
+
         [AraDevEvent]
-        public AraComponentEvent<EventHandler> Click { get; set; }
+        [JsonIgnore]
+        public AraComponentEvent<EventHandler> Click { get { return _Click; } set { _Click = value; } }
         #endregion
 
 
@@ -93,6 +111,7 @@ namespace Ara2.Components
         private string _Text=" ";
         [AraDevProperty(" ")]
         [PropertySupportLayout]
+        [JsonIgnore]
         public string Text
         {
             set
@@ -111,6 +130,7 @@ namespace Ara2.Components
 
         private bool _Enabled = true;
         [AraDevProperty(true)]
+        [JsonIgnore]
         public bool Enabled
         {
             get { return _Enabled; }
@@ -305,6 +325,7 @@ namespace Ara2.Components
         private ButtonIco _Ico = ButtonIco.None;
         [AraDevProperty(ButtonIco.None)]
         [PropertySupportLayout]
+        [JsonIgnore]
         public ButtonIco Ico 
         {
             get
@@ -323,6 +344,7 @@ namespace Ara2.Components
         private ButtonIco _IcoSecondary = ButtonIco.None;
         [AraDevProperty(ButtonIco.None)]
         [PropertySupportLayout]
+        [JsonIgnore]
         public ButtonIco IcoSecondary
         {
             get
@@ -343,6 +365,7 @@ namespace Ara2.Components
         #region Ara2Dev
         private string _Name = "";
         [AraDevProperty("")]
+        [JsonIgnore]
         public string Name
         {
             get { return _Name; }
@@ -350,6 +373,7 @@ namespace Ara2.Components
         }
 
         private AraEvent<DStartEditPropertys> _StartEditPropertys = null;
+        [JsonIgnore]
         public AraEvent<DStartEditPropertys> StartEditPropertys
         {
             get
@@ -374,6 +398,7 @@ namespace Ara2.Components
         }
         
         private AraEvent<DStartEditPropertys> _ChangeProperty = new AraEvent<DStartEditPropertys>();
+        [JsonIgnore]
         public AraEvent<DStartEditPropertys> ChangeProperty
         {
             get

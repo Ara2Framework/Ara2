@@ -11,13 +11,13 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using Ara2.Dev;
 using System.ComponentModel;
-
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
 
     [Serializable]
-    public class AraObject:IAraObject,IDisposable
+    public class AraObject : IAraObject, IDisposable
     {
         #region Static
         public static AraObject Create(IAraObject ConteinerFather)
@@ -29,26 +29,38 @@ namespace Ara2.Components
 
         #endregion
 
+        protected AraObject()
+        {
+
+        }
+
         public AraObject(string vInstanceID, IAraObject vConteinerFather)
         {
-            if (vConteinerFather != null)
-                _ConteinerFather = new AraObjectInstance<IAraObject>(vConteinerFather);
-            else
-                _ConteinerFather = null;
 
-            if (vInstanceID !=null)
+            if (vConteinerFather != null)
+            {
+                _ConteinerFatherInstanceID = vConteinerFather.InstanceID;
+                _ConteinerFather = new AraObjectInstance<IAraObject>(vConteinerFather);
+            }
+            else
+            {
+                _ConteinerFatherInstanceID = null;
+                _ConteinerFather = null;
+            }
+
+            if (vInstanceID != null)
                 _InstanceID = vInstanceID;
             else
                 _InstanceID = Tick.GetTick().Session.GetNewID();
 
-            if (vConteinerFather!=null)
+            if (vConteinerFather != null)
                 vConteinerFather.AddChild(this);
 
             Tick.GetTick().Session.AddObject(this, vConteinerFather);
         }
 
 
-        
+
 
         private string _InstanceID;
         [Browsable(false)]
@@ -61,7 +73,7 @@ namespace Ara2.Components
 
 
         public delegate void DChangeConteinerFatherBefore(IAraObject ToConteinerFather);
-        
+
         private AraEvent<DChangeConteinerFatherBefore> _ChangeConteinerFatherBefore = new AraEvent<DChangeConteinerFatherBefore>();
         [AraDevEvent]
         public AraEvent<DChangeConteinerFatherBefore> ChangeConteinerFatherBefore
@@ -77,11 +89,12 @@ namespace Ara2.Components
             set { _ChangeConteinerFatherAfter = value; }
         }
 
-        
-        
-        private AraObjectInstance<IAraObject> _ConteinerFather=null;
+
+
+        private AraObjectInstance<IAraObject> _ConteinerFather = null;
 
         [Browsable(false)]
+        [JsonIgnore]
         public IAraObject ConteinerFather
         {
             get {
@@ -93,7 +106,7 @@ namespace Ara2.Components
             }
             set
             {
-                if (ChangeConteinerFatherBefore!=null)
+                if (ChangeConteinerFatherBefore != null)
                     ChangeConteinerFatherBefore.InvokeEvent(value);
 
                 if (this is IAraObjectClienteServer)
@@ -104,12 +117,22 @@ namespace Ara2.Components
                     Tick.GetTick().Script.Send("TmpConteinerFather.Obj.appendChild(vObj.Obj);");
                 }
 
+                _ConteinerFatherInstanceID = value.InstanceID;
                 _ConteinerFather = new AraObjectInstance<IAraObject>(value);
-                if (ChangeConteinerFatherAfter!=null)
+                if (ChangeConteinerFatherAfter != null)
                     ChangeConteinerFatherAfter.InvokeEvent();
             }
         }
 
+        string _ConteinerFatherInstanceID;
+        [Browsable(false)]
+        public string ConteinerFatherInstanceID
+        {
+            get
+            {
+                return _ConteinerFatherInstanceID;
+            }
+        }
 
         // Flag: Has Dispose already been called?
         bool disposed = false;
@@ -189,6 +212,7 @@ namespace Ara2.Components
         }
 
         [Browsable(false)]
+        [JsonIgnore]
         public IAraObject[] Childs
         {
             get

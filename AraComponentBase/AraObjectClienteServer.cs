@@ -57,7 +57,7 @@ namespace Ara2.Components
         }
         #endregion
 
-        AraContainer AraContainer;
+        AraContainer AraContainer = new AraContainer();
         // (vObj==null? Tick.GetTick().Session.GetNewID():vObj.Name)
 
         //public AraObjectClienteServer(IAraObject vObj, IAraObject vConteinerFather) :
@@ -65,7 +65,12 @@ namespace Ara2.Components
         //{
         //}
 
-        
+
+        protected AraObjectClienteServer():
+            base()
+        {
+
+        }
 
         public AraObjectClienteServer(IAraObject vObj, IAraObject vConteinerFather, string vTypeNameJS) :
             this((vObj==null?null:vObj.InstanceID), vConteinerFather, vTypeNameJS)
@@ -80,13 +85,12 @@ namespace Ara2.Components
         public AraObjectClienteServer(string vName, IAraObject vConteinerFather, string vTypeNameJS) :
             base(vName, vConteinerFather)
         {
-            this.SetProperty += AraComponent_SetProperty;
 
             //if (ConteinerFather != null && ConteinerFather is IAraContainerClient)
             //    ((IAraContainerClient)ConteinerFather).AddChild(this);
             Tick.GetTick().Session.AddObject(this, vConteinerFather, vTypeNameJS);
 
-            AraContainer = new AraContainer();
+            
         }
         
         public void TickScriptCall()
@@ -121,31 +125,35 @@ namespace Ara2.Components
 
 
 
-        private AraEvent<DComponentEventInternal> _EventInternal = new AraEvent<DComponentEventInternal>();
-        [AraDevEvent]
-        public AraEvent<DComponentEventInternal> EventInternal
-        {
-            get { return _EventInternal; }
-            set { _EventInternal = value; }
-        }
+        //private AraEvent<DComponentEventInternal> _EventInternal = new AraEvent<DComponentEventInternal>();
+        //[AraDevEvent]
+        //public AraEvent<DComponentEventInternal> EventInternal
+        //{
+        //    get { return _EventInternal; }
+        //    set { _EventInternal = value; }
+        //}
 
-        private AraEvent<DComponentProperty> _SetProperty = new AraEvent<DComponentProperty>();
-        [AraDevEvent]
-        public AraEvent<DComponentProperty> SetProperty
+        //private AraEvent<DComponentProperty> _SetProperty = new AraEvent<DComponentProperty>();
+        //[AraDevEvent]
+        //public AraEvent<DComponentProperty> SetProperty
+        //{
+        //    get { return _SetProperty; }
+        //    set { _SetProperty = value; }
+        //}
+        public virtual void EventInternal(string vFunction)
         {
-            get { return _SetProperty; }
-            set { _SetProperty = value; }
+
         }
 
         public abstract void LoadJS();
 
-        private void AraComponent_SetProperty(string vName, dynamic vValue)
+        public virtual void SetProperty(string vProperty, dynamic vValue)
         {
             this.TickScriptCall();
 
-            Tick.GetTick().Script.Send(" vObj.ControlVar.SetValueUtm('" + vName + "'," + (vValue == null ? "null" : "'" + AraTools.StringToStringJS(vValue.ToString()) + "'") + "); \n");
+            Tick.GetTick().Script.Send(" vObj.ControlVar.SetValueUtm('" + vProperty + "'," + (vValue == null ? "null" : "'" + AraTools.StringToStringJS(vValue.ToString()) + "'") + "); \n");
 
-            if (vName == "IsDestroyed()")
+            if (vProperty == "IsDestroyed()")
             {
                 if (vValue == true)
                 {

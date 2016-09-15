@@ -2,8 +2,10 @@
 // For licensing, see LICENSE.md or http://www.araframework.com.br/license
 // This file is part of AraFramework project details visit http://www.arafrework.com.br
 // AraFramework - Rafael Leonel Pontani, 2016-4-14
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace Ara2.Components
 {
@@ -14,9 +16,9 @@ namespace Ara2.Components
         ThreadClick = 3
     }
 
-    [Serializable]
-    [TypeConverter(typeof(AraEventConverter))]
+    //[TypeConverter(typeof(AraEventConverter))]
     [Category("Events")]
+    [Serializable]
     public class AraComponentEvent<T>:AraEvent<T>
     {
         public static AraComponentEvent<T> operator +(AraComponentEvent<T> vObj, T vObj2)
@@ -31,6 +33,11 @@ namespace Ara2.Components
             return vObj;
         }
 
+        protected AraComponentEvent():
+            base()
+        {
+            
+        }
 
         public AraComponentEvent(IAraObjectClienteServer vObject, string vEventName)
         {
@@ -64,6 +71,8 @@ namespace Ara2.Components
         }
 
         private AraObjectInstance<IAraObjectClienteServer> _Object;
+
+        [JsonIgnore]
         public IAraObjectClienteServer Object
         {
             get
@@ -72,18 +81,26 @@ namespace Ara2.Components
             }
         }
 
-        private string _EventName;
+
+        public string _EventName;
+
+        [JsonIgnore]
         public string EventName
         {
             get
             {
                 return _EventName;
             }
+            set
+            {
+                _EventName = value;
+            }
         }
 
 
         private EAraComponentEventTypeThread _TypeThreadEvent = EAraComponentEventTypeThread.ThreadSingle;
 
+        [JsonIgnore]
         public EAraComponentEventTypeThread TypeThreadEvent
         {
             get { return _TypeThreadEvent; }

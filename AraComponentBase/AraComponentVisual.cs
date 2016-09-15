@@ -8,19 +8,22 @@ using System.Linq;
 using System.Text;
 using Ara2.Dev;
 using System.ComponentModel;
-
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
     [Serializable]
     public abstract class AraComponentVisual : AraObjectClienteServer, IAraComponentVisual
     {
+        protected AraComponentVisual():
+            base()
+        {
+
+        }
+
         public AraComponentVisual(string vNameObject, IAraObject vConteinerFather, string vTypeNameJS) :
             base(vNameObject, vConteinerFather, vTypeNameJS)
         {
-            SetProperty += ComponentVisual_SetProperty;
-            EventInternal += ComponentVisual_EventInternal;
-
             _HeightChangeAfter = new AraComponentEvent<Action>(this, "HeightChangeAfter");
             _WidthChangeAfter = new AraComponentEvent<Action>(this, "WidthChangeAfter");
 
@@ -29,7 +32,7 @@ namespace Ara2.Components
                     this.TypePosition = ETypePosition.Static;
         }
 
-        private void ComponentVisual_EventInternal(String vFunction)
+        public virtual void EventInternal(String vFunction)
         {
             switch (vFunction.ToUpper())
             {
@@ -52,10 +55,13 @@ namespace Ara2.Components
                         }
                     }
                     break;
+                default:
+                    base.EventInternal(vFunction);
+                    break;
             }
         }
 
-        private void ComponentVisual_SetProperty(string vProperty, dynamic vValeu)
+        public new virtual void SetProperty(string vProperty, dynamic vValeu)
         {
             switch (vProperty)
             {
@@ -93,7 +99,11 @@ namespace Ara2.Components
                     //    //vTick.Script.Send(" vObj.ControlVar.SetValueUtm('Height', vObj.Height );\n");
                     //}
                     break;
-
+                default:
+                    {
+                        base.SetProperty(vProperty, (object)vValeu);
+                    }
+                    break;
             }
         }
 
@@ -101,6 +111,7 @@ namespace Ara2.Components
 
         [AraDevProperty(true)]
         [PropertySupportLayout]
+        [JsonIgnore]
         public bool Visible
         {
             get { return _Visible; }
@@ -117,6 +128,7 @@ namespace Ara2.Components
         }
 
         [Browsable(false)]
+        [JsonIgnore]
         public bool VisibleGlobal
         {
             get {
@@ -143,6 +155,7 @@ namespace Ara2.Components
 
         [AraDevProperty]
         [PropertySupportLayout]
+        [JsonIgnore]
         public AraDistance Left
         {
             get { return _Left; }
@@ -177,6 +190,7 @@ namespace Ara2.Components
 
         [AraDevProperty]
         [PropertySupportLayout]
+        [JsonIgnore]
         public AraDistance Top
         {
             get { return _Top; }
@@ -205,6 +219,7 @@ namespace Ara2.Components
         protected AraDistance _MinWidth = null;
         [AraDevProperty(null)]
         [PropertySupportLayout]
+        [JsonIgnore]
         public AraDistance MinWidth
         {
             get { return _MinWidth; }
@@ -230,6 +245,7 @@ namespace Ara2.Components
         protected AraDistance _MinHeight = null;
         [AraDevProperty(null)]
         [PropertySupportLayout]
+        [JsonIgnore]
         public AraDistance MinHeight
         {
             get { return _MinHeight; }
@@ -258,6 +274,7 @@ namespace Ara2.Components
         private AraEvent<AraDistance.DChangeDistance> _WidthChangeBefore = new AraEvent<AraDistance.DChangeDistance>();
 
         [AraDevEvent]
+        [JsonIgnore]
         public AraEvent<AraDistance.DChangeDistance> WidthChangeBefore
         {
             get { return _WidthChangeBefore; }
@@ -268,6 +285,7 @@ namespace Ara2.Components
         private AraComponentEvent<Action> _WidthChangeAfter;
 
         [AraDevEvent]
+        [JsonIgnore]
         public AraComponentEvent<Action> WidthChangeAfter 
         {
             get { return _WidthChangeAfter; }
@@ -278,6 +296,7 @@ namespace Ara2.Components
         
         [AraDevProperty(null)]
         [PropertySupportLayout]
+        [JsonIgnore]
         public AraDistance Width
         {
             get { return _Width; }
@@ -311,6 +330,7 @@ namespace Ara2.Components
         private AraEvent<AraDistance.DChangeDistance> _HeightChangeBefore = new AraEvent<AraDistance.DChangeDistance>();
 
         [AraDevEvent]
+        [JsonIgnore]
         public AraEvent<AraDistance.DChangeDistance> HeightChangeBefore
         {
             get { return _HeightChangeBefore; }
@@ -320,6 +340,7 @@ namespace Ara2.Components
         private AraComponentEvent<Action> _HeightChangeAfter;
 
         [AraDevEvent]
+        [JsonIgnore]
         public AraComponentEvent<Action> HeightChangeAfter
         {
             get { return _HeightChangeAfter; }
@@ -330,6 +351,7 @@ namespace Ara2.Components
 
         [AraDevProperty(null)]
         [PropertySupportLayout]
+        [JsonIgnore]
         public AraDistance Height
         {
             get { return _Height; }
@@ -377,6 +399,7 @@ namespace Ara2.Components
         [PropertySupportLayout]
         [DefaultValue(ETypePosition.Absolute)]
         [Browsable(true)]
+        [JsonIgnore]
         public ETypePosition TypePosition
         {
             get { return _TypePosition; }
@@ -406,6 +429,7 @@ namespace Ara2.Components
 
         private AraResizable _Resizable = null;
         [DefaultValue(null)]
+        [JsonIgnore]
         public AraResizable Resizable
         {
             get { return _Resizable; }
@@ -417,6 +441,7 @@ namespace Ara2.Components
 
         private AraDraggable _Draggable = null;
         [DefaultValue(null)]
+        [JsonIgnore]
         public AraDraggable Draggable
         {
             get { return _Draggable; }
@@ -428,6 +453,7 @@ namespace Ara2.Components
 
         private AraSelectable _Selectable = null;
         [DefaultValue(null)]
+        [JsonIgnore]
         public AraSelectable Selectable
         {
             get { return _Selectable; }
@@ -442,6 +468,7 @@ namespace Ara2.Components
         [AraDevProperty(null)]
         [PropertySupportLayout]
         [MergableProperty(false)]
+        [JsonIgnore]
         public int? ZIndex
         {
             get { return _ZIndex; }

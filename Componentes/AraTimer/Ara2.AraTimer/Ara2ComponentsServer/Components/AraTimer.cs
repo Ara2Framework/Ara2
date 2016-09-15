@@ -9,6 +9,7 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 using Ara2;
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
@@ -17,25 +18,27 @@ namespace Ara2.Components
     {
         public static bool ArquivosHdCarregado = false;
 
+        [JsonConstructor]
+        public AraTimer():
+            base()
+        {
+
+        }
+
         public AraTimer(IAraObject ConteinerFather)
             : base(ConteinerFather, "AraTimer")
         {
-            Construct();
-        }
-
-        private void Construct()
-        {
             tick = new AraComponentEvent<Action>(this, "tick", EAraComponentEventTypeThread.ThreadMulti);
-            EventInternal += AraTimer_EventInternal;
         }
 
+        
         public override void LoadJS()
         {
             Tick vTick = Tick.GetTick();
             vTick.Session.AddJs("Ara2/Components/AraTimer/AraTimer.js");
         }
 
-        public void AraTimer_EventInternal(String vFunction)
+        public override void EventInternal(string vFunction)
         {
             switch (vFunction)
             {
@@ -60,8 +63,12 @@ namespace Ara2.Components
                             }
                         }
                     }
-                    break;
+                    
 				}
+                    break;
+                default:
+                    base.EventInternal(vFunction);
+                    break;
             }
         }
 
@@ -70,6 +77,7 @@ namespace Ara2.Components
         #endregion
 
         private int _Interval = 0;
+        [JsonIgnore]
         public int Interval
         {
             set
@@ -86,6 +94,7 @@ namespace Ara2.Components
 
 
         private bool _Enabled = false;
+        [JsonIgnore]
         public bool Enabled
         {
             get { return _Enabled; }
@@ -109,7 +118,8 @@ namespace Ara2.Components
 		/// The time out in second
 		/// </summary>
 		private int _Timeout=15;
-		public int Timeout
+        [JsonIgnore]
+        public int Timeout
         {
             set
             {

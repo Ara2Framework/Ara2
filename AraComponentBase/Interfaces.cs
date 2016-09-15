@@ -26,6 +26,7 @@ namespace Ara2.Components
     public interface IAraObject:IDisposable
     {
         string InstanceID { get; set; }
+        string ConteinerFatherInstanceID { get; }
         IAraObject ConteinerFather { get; set; }
 
         AraEvent<AraObject.DChangeConteinerFatherBefore> ChangeConteinerFatherBefore { get; set; }
@@ -47,13 +48,14 @@ namespace Ara2.Components
         void CssRemoveClass(string vNameClass);
         void Style(string vInstanceID, string vValue);
 
-        AraEvent<DComponentEventInternal> EventInternal { get; set; }
-        AraEvent<DComponentProperty> SetProperty { get; set; }
+        void EventInternal(string vFunction);
+        void SetProperty(string vProperty, dynamic vValue);
+
         void LoadJS();
     }
 
-    public delegate void DComponentEventInternal(string vFunction);
-    public delegate void DComponentProperty(String vProperty,dynamic vValue);
+    //public delegate void DComponentEventInternal(string vFunction);
+    //public delegate void DComponentProperty(String vProperty,dynamic vValue);
 
   
 

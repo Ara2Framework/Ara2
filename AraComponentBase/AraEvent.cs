@@ -8,20 +8,23 @@ using System.Linq;
 using System.Reflection;
 using System.ComponentModel;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
 
     [Serializable]
-    [TypeConverter(typeof(AraEventConverter))]
+    //[TypeConverter(typeof(AraEventConverter))]
     [Category("Events")]
     public class AraEvent<T> : IAraEvent
     {
 
+        [NonSerialized]
+        [JsonIgnore]
+        protected T _Event;
 
         [NonSerialized]
-        protected T _Event;
-        [NonSerialized]
+        [JsonIgnore]
         protected bool _EventsLoad = false;
 
 
@@ -58,6 +61,8 @@ namespace Ara2.Components
             T Tmp = this.InvokeEvent;
 
             this._Event = (T)(object)MulticastDelegate.Combine((MulticastDelegate)(object)this._Event, (MulticastDelegate)(object)vObj2);
+            if (this._Name==null)
+                this._Name = ((MulticastDelegate)(object)this._Event).Method.Name;
             UpdateNameObjects();
             InvokeChangeEnabled();
         }
@@ -75,11 +80,16 @@ namespace Ara2.Components
 
 
         [Serializable]
-        private struct AraObjectEvent
+        protected class AraObjectEvent
         {
             public string Name;
             public string Method;
             public Type[] Types;
+
+            public AraObjectEvent()
+            {
+
+            }
 
             public AraObjectEvent(string vName, string vMetode, Type[] vTypes)
             {
@@ -89,15 +99,31 @@ namespace Ara2.Components
             }
         }
 
-        private AraObjectEvent[] NameObjects;
+        [JsonProperty]
+        protected List<AraObjectEvent> _NameObjects = new List<AraObjectEvent>();
 
-        [Browsable(false)]
-        public int Count
+        [JsonIgnore]
+        private List<AraObjectEvent> NameObjects
         {
-            get { return (NameObjects != null ? NameObjects.Length : 0); }
+            get
+            {
+                return _NameObjects;
+            }
+            set
+            {
+                _NameObjects = value;
+            }
         }
 
         [Browsable(false)]
+        [JsonIgnore]
+        public int Count
+        {
+            get { return (NameObjects != null ? NameObjects.Count : 0); }
+        }
+
+        [Browsable(false)]
+        [JsonIgnore]
         public bool Enabled
         {
             get
@@ -109,6 +135,7 @@ namespace Ara2.Components
 
         private AraEvent<Action> _ChangeEnabled = null;
         [Browsable(false)]
+        [JsonIgnore]
         public AraEvent<Action> ChangeEnabled
         {
             get
@@ -137,11 +164,13 @@ namespace Ara2.Components
             {
                 foreach (Delegate Tmp in ((MulticastDelegate)(object)_Event).GetInvocationList())
                 {
-                    TmpNameObjects.Add(new AraObjectEvent(((IAraObject)Tmp.Target).InstanceID, Tmp.Method.Name, Tmp.Method.GetParameters().ToList().Select(a => a.ParameterType).ToArray()));
+                    string vInstanceID = ((IAraObject)Tmp.Target).InstanceID;
+                    if (!TmpNameObjects.Where(a=>a.Name == vInstanceID && a.Method == Tmp.Method.Name).Any())
+                        TmpNameObjects.Add(new AraObjectEvent(vInstanceID, Tmp.Method.Name, Tmp.Method.GetParameters().ToList().Select(a => a.ParameterType).ToArray()));
                 }
             }
 
-            NameObjects = TmpNameObjects.ToArray();
+            NameObjects = TmpNameObjects;
             TmpNameObjects = null;
         }
 
@@ -193,6 +222,7 @@ namespace Ara2.Components
         }
 
         [Browsable(false)]
+        [JsonIgnore]
         public T InvokeEvent
         {
             get
@@ -203,9 +233,7 @@ namespace Ara2.Components
                 {
                     if (NameObjects != null)
                     {
-
-                        List<AraObjectEvent> TmpNameObjects = new List<AraObjectEvent>(NameObjects);
-                        foreach (AraObjectEvent Tmp in TmpNameObjects)
+                        foreach (AraObjectEvent Tmp in NameObjects)
                         {
                             object vObj = vTick.Session.GetObject(Tmp.Name);
                             if (vObj != null)
@@ -220,7 +248,7 @@ namespace Ara2.Components
                     foreach (System.Delegate D in ((dynamic)this._Event).GetInvocationList())
                     {
                         IAraObject vObj = (IAraObject)D.Target;
-                        if (vTick.Session.GetObject(vObj.InstanceID) == null)
+                        if (!vTick.Session.ExistsObject(vObj.InstanceID) )
                         {
                             this._Event = (T)(object)MulticastDelegate.Remove((MulticastDelegate)(object)this._Event, D);
                             UpdateNameObjects();
@@ -237,6 +265,7 @@ namespace Ara2.Components
 
         [Ara2.Dev.AraDevProperty]
         [Browsable(false)]
+        [JsonIgnore]
         public string Name
         {
             get { return _Name; }
@@ -275,8 +304,6 @@ namespace Ara2.Components
         {
             return true;
         }
-
-
 
 
         public override object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)

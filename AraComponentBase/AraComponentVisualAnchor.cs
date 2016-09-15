@@ -14,6 +14,12 @@ namespace Ara2.Components
     [Serializable]
     public abstract class AraComponentVisualAnchor : AraComponentVisual, IAraComponentVisualAnchor
     {
+        protected AraComponentVisualAnchor():
+            base()
+        {
+
+        }
+
         public AraComponentVisualAnchor(string vNameObject, IAraObject vConteinerFather, string vTypeNameJS) :
             base(vNameObject, vConteinerFather, vTypeNameJS)
         {

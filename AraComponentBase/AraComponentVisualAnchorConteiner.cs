@@ -8,6 +8,7 @@ using System.Linq;
 using Ara2.Dev;
 using System.ComponentModel;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
@@ -15,6 +16,12 @@ namespace Ara2.Components
     public abstract class AraComponentVisualAnchorConteiner : AraComponentVisualAnchor, IAraContainerClient, IDisposable
     {
         AraContainer _Conteiner = new AraContainer();
+
+        protected AraComponentVisualAnchorConteiner():
+            base()
+        {
+
+        }
 
         public AraComponentVisualAnchorConteiner(string vNameObject, IAraObject vConteinerFather, string vTypeNameJS) :
             base(vNameObject, vConteinerFather, vTypeNameJS)
@@ -32,38 +39,39 @@ namespace Ara2.Components
 
 
         [AraDevEvent]
-        public AraEvent<AraContainer.DAddRemuveChild> AddChildBefore
+        public new AraEvent<AraContainer.DAddRemuveChild> AddChildBefore
         {
             get { return _Conteiner.AddChildBefore; }
             set { _Conteiner.AddChildBefore = value; }
         }
 
         [AraDevEvent]
-        public AraEvent<AraContainer.DAddRemuveChild> AddChildAfter
+        public new AraEvent<AraContainer.DAddRemuveChild> AddChildAfter
         {
             get { return _Conteiner.AddChildAfter; }
             set { _Conteiner.AddChildAfter = value; }
         }
 
         [AraDevEvent]
-        public AraEvent<AraContainer.DAddRemuveChild> RemuveChildBefore
+        public new AraEvent<AraContainer.DAddRemuveChild> RemuveChildBefore
         {
             get { return _Conteiner.RemuveChildBefore; }
             set { _Conteiner.RemuveChildBefore = value; }
         }
 
-        public IAraObject AddChild(IAraObject Child)
+        public new IAraObject AddChild(IAraObject Child)
         {
             return _Conteiner.AddChild(Child);
         }
 
-        public void RemuveChild(IAraObject Child)
+        public new void RemuveChild(IAraObject Child)
         {
             _Conteiner.RemuveChild(Child);
         }
 
         [Browsable(false)]
-        public IAraObject[] Childs
+        [JsonIgnore]
+        public new IAraObject[] Childs
         {
             get
             {
@@ -71,7 +79,7 @@ namespace Ara2.Components
             }
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             if (_ScrollBar != null)
             {
@@ -190,6 +198,7 @@ namespace Ara2.Components
         [DefaultValue(null)]
         [TypeConverter(typeof(LayoutCurrentConverter))]
         [AraCustomEditorFrmLayout]
+        [JsonIgnore]
         public string LayoutCurrent
         {
             get

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
@@ -34,19 +35,26 @@ namespace Ara2.Components
             _ObjectIsLoad = true;
         }
 
+        [JsonProperty]
         string _InstanceID = null;
+
         [Browsable(false)]
+        [JsonIgnore]
         public string InstanceID
         {
             get { return _InstanceID; }
         }
 
         [NonSerialized]
+        [JsonIgnore]
         bool _ObjectIsLoad = false;
+
         [NonSerialized]
+        [JsonIgnore]
         T _Object;
 
         [Browsable(false)]
+        [JsonIgnore]
         public T Object
         {
             get
@@ -74,6 +82,7 @@ namespace Ara2.Components
             }
         }
 
+        [JsonIgnore]
         public dynamic ObjectDynamic
         {
             get

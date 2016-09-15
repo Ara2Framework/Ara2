@@ -12,6 +12,7 @@ using Ara2.Keyboard;
 using System.Collections.Specialized;
 using System.Web;
 using Ara2.Log;
+using Newtonsoft.Json;
 
 namespace Ara2.Components
 {
@@ -19,8 +20,8 @@ namespace Ara2.Components
     [AraDevComponent(vBase:true, vDisplayToolBar:false)]
     public abstract class WindowMain : AraComponentVisualAnchorConteiner, IAraWindowMain
     {
-        public WindowMain() :
-            this(Tick.GetTick().Session)
+        protected WindowMain() :
+            base()
         {
 
         }
@@ -40,13 +41,10 @@ namespace Ara2.Components
             Menssage = new AraComponentEvent<DMenssage>(this, "Menssage");
 
             Unload = new AraComponentEvent<Action>(this, "unload");
-            Unload += WindowMain_Unload;
 
             ChangelocationHash = new AraEvent<Action>();
             Active = new AraEvent<Action>();
 
-            this.EventInternal += WindowMain_EventInternal;
-            this.SetProperty += WindowMain_SetProperty;
             #endregion
 
             vSession.AddObject(this);
@@ -58,7 +56,7 @@ namespace Ara2.Components
             vTick.Session.AddJs("Ara2/Components/WindowMain/WindowMain.js");   
         }
 
-        private void WindowMain_EventInternal(string vFunction)
+        public new virtual void EventInternal(string vFunction)
         {
             Tick vTick = Tick.GetTick();
             switch (vFunction.ToUpper())
@@ -153,23 +151,18 @@ namespace Ara2.Components
                     RunEventAlertGetString(Convert.ToInt32(vTick.Page.Request.Params["key"]), vTick.Page.Request.Params["resul"].ToString());
 
                     break;
+                default:
+                    base.EventInternal(vFunction);
+                    break;
             }
         }
 
-        private void WindowMain_SetProperty(string vName,dynamic vValue)
-        { 
-           
-        }
-
-        private void WindowMain_Unload()
+        public new virtual void SetProperty(string vName,dynamic vValue)
         {
-            try
-            {
-                var vTick = Tick.GetTick();
-                vTick.AraPageMain.MemoryArea.CloseSession(vTick.Session.Id);
-            }
-            catch { }
+            base.SetProperty(vName, (object)vValue);
         }
+
+        
 
         #region History
         public void SetHistoryReplaceState(string vValue)
@@ -593,6 +586,7 @@ namespace Ara2.Components
         List<AraObjectInstance<IDivModal>> DivsModalHide = new List<AraObjectInstance<IDivModal>>();
 
         AraObjectInstance<IAraComponentVisualAnchor> _DivCanvas = new AraObjectInstance<IAraComponentVisualAnchor>();
+        [JsonIgnore]
         public IAraComponentVisualAnchor DivCanvas
         {
             get { return _DivCanvas.Object; }
@@ -726,10 +720,23 @@ namespace Ara2.Components
         }
         #endregion
 
+        public new void Dispose()
+        {
+            //try
+            //{
+            //    var vTick = Tick.GetTick();
+            //    vTick.AraPageMain.MemoryArea.CloseSession(vTick.Session.Id);
+            //}
+            //catch { }
+
+            base.Dispose();
+        }
+
         #region Ara2Dev
 
         private string _Name = "";
         [AraDevProperty("")]
+        [JsonIgnore]
         public string Name
         {
             get { return _Name; }
@@ -737,6 +744,7 @@ namespace Ara2.Components
         }
 
         private AraEvent<DStartEditPropertys> _StartEditPropertys = null;
+        [JsonIgnore]
         public AraEvent<DStartEditPropertys> StartEditPropertys
         {
             get
@@ -762,6 +770,7 @@ namespace Ara2.Components
         }
 
         private AraEvent<DStartEditPropertys> _ChangeProperty = new AraEvent<DStartEditPropertys>();
+        [JsonIgnore]
         public AraEvent<DStartEditPropertys> ChangeProperty
         {
             get

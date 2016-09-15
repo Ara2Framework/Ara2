@@ -336,9 +336,7 @@ namespace Ara2
                             {
                                 try
                                 {
-                                    var vEvent = TmpObj.SetProperty.InvokeEvent;
-                                    if (vEvent != null)
-                                        vEvent(Changes.name, Changes.value);
+                                    var vEvent = TmpObj.SetProperty(Changes.name, Changes.value);
                                 }
                                 catch (Exception err)
                                 {
@@ -348,14 +346,14 @@ namespace Ara2
                         }
                     }
 
-                    try
-                    {
-                        vTick.Session.SaveSession();
-                    }
-                    catch (Exception err)
-                    {
-                        ExceptionAplication(new Exception("Erro SaveSession in RecebeTick.\n" + err.Message));
-                    }
+                    //try
+                    //{
+                    //    vTick.Session.SaveSession();
+                    //}
+                    //catch (Exception err)
+                    //{
+                    //    ExceptionAplication(new Exception("Erro SaveSession in RecebeTick.\n" + err.Message));
+                    //}
                 }
 
                 #endregion
@@ -379,7 +377,7 @@ namespace Ara2
                             if (vTick.Session.OnReceivesInternalEventBefore.InvokeEvent != null)
                                 vTick.Session.OnReceivesInternalEventBefore.InvokeEvent(vTmpObject, vEventName);
 
-                            vTmpObject.EventInternal.InvokeEvent(Page.Request["Event"]);
+                            vTmpObject.EventInternal(Page.Request["Event"]);
 
                             if (vTick.Session.OnReceivesInternalEventAfter.InvokeEvent != null)
                                 vTick.Session.OnReceivesInternalEventAfter.InvokeEvent(vTmpObject, vEventName);

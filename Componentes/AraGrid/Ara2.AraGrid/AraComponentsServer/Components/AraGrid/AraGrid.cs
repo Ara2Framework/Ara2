@@ -54,8 +54,6 @@ namespace Ara2.Components
 
             ChangeCell = new AraComponentEventKey<ChangeCell_delegate>(this, "ChangeCell", EAraComponentEventTypeThread.ThreadMulti);
 
-            this.EventInternal += AraGrid_EventInternal;
-            this.SetProperty += AraGrid_SetProperty;
             this.WidthChangeBefore += AraGrid_WHChangeBefore;
             this.HeightChangeBefore += AraGrid_WHChangeBefore;
 
@@ -220,7 +218,7 @@ namespace Ara2.Components
             set { }
         }
 
-        private void AraGrid_EventInternal(String vFunction)
+        public virtual void EventInternal(String vFunction)
 		{
             Tick vTick = Tick.GetTick();
             switch (vFunction.ToUpper())
@@ -326,10 +324,13 @@ namespace Ara2.Components
                 case "CLICKBUTTON":
                     Buttons.RunEventClick(Convert.ToInt32(vTick.Page.Request["codigo"]));
                     break;
+                default:
+                    base.EventInternal(vFunction);
+                    break;
             }
         }
 
-        private void AraGrid_SetProperty(String vNome, dynamic vValor)
+        public new virtual void SetProperty(String vNome, dynamic vValor)
         {
 
             switch (vNome)
@@ -387,6 +388,9 @@ namespace Ara2.Components
                         foreach (dynamic vObj in Json.DynamicJson.Parse(vValor))
                             Rows[vObj.rowid].TreeExpand = (vObj.value == "true"?true:false);
                     }
+                    break;
+                default:
+                    base.SetProperty(vNome, (object)vValor);
                     break;
             }
 

@@ -2,6 +2,7 @@
 // For licensing, see LICENSE.md or http://www.araframework.com.br/license
 // This file is part of AraFramework project details visit http://www.arafrework.com.br
 // AraFramework - Rafael Leonel Pontani, 2016-4-14
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,11 @@ namespace Ara2.Components
     [Serializable]
     public class AraComponentEventKey<T> : AraComponentEvent<T>
     {
+        public AraComponentEventKey():
+            base()
+        {
+        }
+
         public AraComponentEventKey(AraObjectClienteServer vObject, string vEventName) :
             base(vObject, vEventName)
         { }
@@ -31,6 +37,7 @@ namespace Ara2.Components
 
 
         private int[] _Ignore;
+        [JsonIgnore]
         public int[] Ignore
         {
             get { return _Ignore; }
@@ -52,6 +59,7 @@ namespace Ara2.Components
         }
 
         private int[] _Only;
+        [JsonIgnore]
         public int[] Only
         {
             get { return _Only; }
@@ -73,6 +81,7 @@ namespace Ara2.Components
         }
 
         private int[] _ReturnFalse;
+        [JsonIgnore]
         public int[] ReturnFalse
         {
             get { return _ReturnFalse; }
@@ -94,6 +103,7 @@ namespace Ara2.Components
         }
 
         private int[] _ReturnTrue;
+        [JsonIgnore]
         public int[] ReturnTrue
         {
             get { return _ReturnTrue; }
