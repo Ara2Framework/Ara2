@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memoria", "Memoria", "{D996
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara2.Session2", "Ara2.Session2\Ara2.Session2.csproj", "{941FD616-7F2D-45D0-847C-A15B3F0B2F76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara2.Session3", "..\Ara2.Session3\Ara2.Session3.csproj", "{CC2E2B89-1D38-4374-B15E-8171B4A1C775}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ara2.Session3", "Ara2.Session3\Ara2.Session3.csproj", "{CC2E2B89-1D38-4374-B15E-8171B4A1C775}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87976367-BF90-4176-A540-689D1D773771}"
 	ProjectSection(SolutionItems) = preProject
