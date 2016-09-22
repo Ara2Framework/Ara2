@@ -134,6 +134,7 @@ namespace Ara2.Components
 
 
         private AraEvent<Action> _ChangeEnabled = null;
+
         [Browsable(false)]
         [JsonIgnore]
         public AraEvent<Action> ChangeEnabled
