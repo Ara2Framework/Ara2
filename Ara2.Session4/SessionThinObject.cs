@@ -8,6 +8,7 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
+using System.Collections;
 
 namespace Ara2.Session4
 {
@@ -27,11 +28,9 @@ namespace Ara2.Session4
             {
                 if (ObjectPackTypes.TryGetValue(TypeObjext, out vTmp))
                     return vTmp;
-            }
 
-            vTmp = new ObjectPackType(TypeObjext);
-            lock (ObjectPackTypes)
-            {
+                vTmp = new ObjectPackType(TypeObjext);
+
                 ObjectPackTypes.Add(TypeObjext, vTmp);
             }
 
@@ -44,7 +43,16 @@ namespace Ara2.Session4
             IdInstance = vObj.InstanceID;
             TypeObjext = vObj.GetType();
 
-            GetObjectPackType(ref TypeObjext).SerializeObjetct(vObj, out this.ObjectData);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                StreamWriter sw = new StreamWriter(stream);
+
+                GetObjectPackType(ref TypeObjext).SerializeObjetct(ref vObj, ref sw);
+                sw.Dispose();
+                sw = null;
+
+                this.ObjectData = stream.ToArray();
+            }
         }
 
         public IAraObject ToIAraObject()
@@ -75,6 +83,26 @@ namespace Ara2.Session4
             Metodos = TmpMembros.OrderBy(a => a.Name).ToArray();
         }
 
+
+        private static bool FiltraMemberNaoSerializaveis(PropertyInfo vM)
+        {
+            if (vM.CanWrite==false 
+                || vM.CanRead==false 
+                || (vM.GetGetMethod() !=null && vM.GetGetMethod().IsStatic)
+                || vM.PropertyType.IsAssignableFrom(typeof(IAraObject)))
+                return false;
+            else
+                return FiltraMemberNaoSerializaveis((MemberInfo)vM);
+        }
+
+        private static bool FiltraMemberNaoSerializaveis(FieldInfo vM)
+        {
+            if (vM.IsInitOnly || vM.IsStatic || vM.FieldType.IsAssignableFrom(typeof(IAraObject)))
+                return false;
+            else
+                return FiltraMemberNaoSerializaveis((MemberInfo)vM);
+        }
+
         private static bool FiltraMemberNaoSerializaveis(MemberInfo vM)
         {
             if (TemAtributo<NonSerializedAttribute>(vM) 
@@ -90,61 +118,52 @@ namespace Ara2.Session4
         }
 
 
-        public void SerializeObjetct(IAraObject vObj,out byte[] vObjB)
+        public void SerializeObjetct(ref IAraObject vObj,ref StreamWriter sw)
         {
-            SerializeObjetct((object)vObj, out vObjB);
+            var vTmpObj = (object)vObj;
+            SerializeObjetct(ref vTmpObj, ref sw);
         }
 
-        public void SerializeObjetct(object vObj, out byte[] vObjB)
+        public void SerializeObjetct(ref object vObj, ref StreamWriter sw)
         {
-            using (MemoryStream stream = new MemoryStream())
+            if (vObj==null)
             {
-                using (var sw = new StreamWriter(stream))
+                sw.Write(BitConverter.GetBytes((int)0));
+                return;
+            }
+
+            foreach (var vM in Metodos)
+            {
+                Type vType;
+                object vGetValueObj;
+                if (vM is PropertyInfo)
                 {
-                    foreach (var vM in Metodos)
-                    {
-                        Type vType;
-                        object vGetValueObj;
-                        if (vM is PropertyInfo)
-                        {
-                            vType = ((PropertyInfo)vM).PropertyType;
-                            vGetValueObj = ((PropertyInfo)vM).GetValue(vObj, null);
-                        }
-                        else if (vM is FieldInfo)
-                        {
-                            vType = ((FieldInfo)vM).FieldType;
-                            vGetValueObj = ((FieldInfo)vM).GetValue(vObj);
-                        }
-                        else
-                            throw new Exception(string.Format("Metodo '{0}' inesperado, não é PropertyInfo e FieldInfo", vM.Name));
-
-                        if (ToByteSuportado(vType))
-                        {
-                            byte[] vValue = ToBytes(vGetValueObj);
-                            if (vValue != null && vValue.Length > 0)
-                            {
-                                sw.Write(BitConverter.GetBytes(vValue.Length));
-                                sw.Write(vValue);
-                            }
-                            else
-                                sw.Write(BitConverter.GetBytes((int)0));
-                        }
-                        else
-                        {
-                            byte[] vTmpB;
-                            SessionThinObject.GetObjectPackType(ref vType).SerializeObjetct(vGetValueObj, out vTmpB);
-                            if (vTmpB != null || vTmpB.Length > 0)
-                            {
-                                sw.Write(BitConverter.GetBytes(vTmpB.Length));
-                                sw.Write(vTmpB);
-                            }
-                            else
-                                sw.Write(BitConverter.GetBytes((int)0));
-                        }
-                    }
+                    vType = ((PropertyInfo)vM).PropertyType;
+                    vGetValueObj = ((PropertyInfo)vM).GetValue(vObj, null);
                 }
+                else if (vM is FieldInfo)
+                {
+                    vType = ((FieldInfo)vM).FieldType;
+                    vGetValueObj = ((FieldInfo)vM).GetValue(vObj);
+                }
+                else
+                    throw new Exception(string.Format("Metodo '{0}' inesperado, não é PropertyInfo e FieldInfo", vM.Name));
 
-                vObjB = stream.ToArray();
+                if (ToByteSuportado(vType))
+                {
+                    byte[] vValue = ToBytes(ref vType,ref vGetValueObj);
+                    if (vValue != null && vValue.Length > 0)
+                    {
+                        sw.Write(BitConverter.GetBytes(vValue.Length));
+                        sw.Write(vValue);
+                    }
+                    else
+                        sw.Write(BitConverter.GetBytes((int)0));
+                }
+                else
+                {
+                    SessionThinObject.GetObjectPackType(ref vType).SerializeObjetct(ref vGetValueObj, ref sw);
+                }
             }
         }
 
@@ -171,18 +190,21 @@ namespace Ara2.Session4
             typeof(float?    ),
             typeof(double?   ),
 
+            typeof(decimal   ),
+            typeof(decimal?   ),
+
             typeof(string   ),
         };
 
         private static bool ToByteSuportado(Type vObj)
         {
-            if (TypesSuportados.Contains(vObj))
+            if (TypesSuportados.Contains(vObj) || vObj.IsEnum || typeof(IEnumerable).IsAssignableFrom(vObj))
                 return true;
             else
                 return false;
         }
 
-        private static byte[] ToBytes(object vObj)
+        private static byte[] ToBytes(ref Type vObjType, ref object vObj)
         {
             if (vObj == null)
                 return null;
@@ -207,8 +229,40 @@ namespace Ara2.Session4
                 return BitConverter.GetBytes((float)vObj);
             else if (vObj is double || vObj is double?)
                 return BitConverter.GetBytes((double)vObj);
+            else if (vObj is decimal || vObj is decimal?)
+                return BitconverterExt.GetBytes((decimal)vObj);
             else if (vObj is string)
                 return Encoding.ASCII.GetBytes((string)vObj);
+            else if (vObjType.IsEnum)
+                return BitConverter.GetBytes(Convert.ToInt32(vObj));
+            else if (typeof(IEnumerable).IsAssignableFrom(vObjType))
+            {
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    StreamWriter sw = new StreamWriter(stream);
+
+
+                    ObjectPackType vObjectPackType = null;
+
+                    foreach (var vTmp in (IEnumerable)vObj)
+                    {
+                        object vTmp2 = (object)vTmp;
+
+                        if (vObjectPackType == null)
+                        {
+                            Type vTypeEnum = vTmp2.GetType();
+                            vObjectPackType = SessionThinObject.GetObjectPackType(ref vTypeEnum);
+                        }
+
+                        vObjectPackType.SerializeObjetct(ref vTmp2, ref sw);
+                    }
+
+                    sw.Dispose();
+                    sw = null;
+
+                    return stream.ToArray();
+                }
+            }
             else
                 throw new Exception(string.Format("Tipo '{0}' não suportado pelo ToBytes ", vObj.GetType()));
         }
@@ -218,6 +272,42 @@ namespace Ara2.Session4
             throw new NotImplementedException();
         }
 
+    }
+
+    public class BitconverterExt
+    {
+        public static byte[] GetBytes(decimal dec)
+        {
+            //Load four 32 bit integers from the Decimal.GetBits function
+            Int32[] bits = decimal.GetBits(dec);
+            //Create a temporary list to hold the bytes
+            List<byte> bytes = new List<byte>();
+            //iterate each 32 bit integer
+            foreach (Int32 i in bits)
+            {
+                //add the bytes of the current 32bit integer
+                //to the bytes list
+                bytes.AddRange(BitConverter.GetBytes(i));
+            }
+            //return the bytes list as an array
+            return bytes.ToArray();
+        }
+        public static decimal ToDecimal(byte[] bytes)
+        {
+            //check that it is even possible to convert the array
+            if (bytes.Count() != 16)
+                throw new Exception("A decimal must be created from exactly 16 bytes");
+            //make an array to convert back to int32's
+            Int32[] bits = new Int32[4];
+            for (int i = 0; i <= 15; i += 4)
+            {
+                //convert every 4 bytes into an int32
+                bits[i / 4] = BitConverter.ToInt32(bytes, i);
+            }
+            //Use the decimal's new constructor to
+            //create an instance of decimal
+            return new decimal(bits);
+        }
     }
 
 
