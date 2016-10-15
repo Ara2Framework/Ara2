@@ -28,7 +28,13 @@ namespace Ara2.Components
             ((IAraObjectClienteServer)this.ConteinerFather).TickScriptCall();
             Tick.GetTick().Script.Send(" vObj.Anchor.SetConteinerFather(" + (this.ConteinerFather.ConteinerFather == null ? "null" : "Ara.GetObject('" + this.ConteinerFather.ConteinerFather.InstanceID + "')") + ");\n");
         }
-        
+
+
+        private AraAnchor()
+        {
+
+        }
+
         private decimal? _Left = null;
         [AraDevProperty]
         [PropertySupportLayout]

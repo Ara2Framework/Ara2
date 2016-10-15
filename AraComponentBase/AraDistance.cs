@@ -92,6 +92,10 @@ namespace Ara2.Components
             _Unity = vUnity;
         }
 
+        private AraDistance()
+        {
+        }
+
 
         public static AraDistance operator +(AraDistance vObj, decimal vObj2)
         {

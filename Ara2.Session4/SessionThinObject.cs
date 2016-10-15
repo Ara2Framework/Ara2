@@ -17,7 +17,7 @@ namespace Ara2.Session4
         private string IdInstance;
         private Type TypeObjext;
         private byte[] ObjectData;
-        
+
         #region ObjectPackTypes
         static Dictionary<Type, ObjectPackType> ObjectPackTypes = new Dictionary<Type, ObjectPackType>();
 
@@ -45,21 +45,23 @@ namespace Ara2.Session4
 
             using (MemoryStream stream = new MemoryStream())
             {
-                StreamWriter sw = new StreamWriter(stream);
-
-                GetObjectPackType(ref TypeObjext).SerializeObjetct(ref vObj, ref sw);
-                sw.Dispose();
-                sw = null;
-
+                MemoryStream stream2 = stream;
+                GetObjectPackType(ref TypeObjext).SerializeObjetct(ref vObj, ref stream2);
+                stream2 = null;
                 this.ObjectData = stream.ToArray();
             }
+
+            //object vTmp;
+            //MemoryStream ms = new MemoryStream(ObjectData);
+            //GetObjectPackType(ref TypeObjext).DeserializeObjetct(ref ms, out vTmp);
         }
 
         public IAraObject ToIAraObject()
         {
-            IAraObject vTmp;
-            GetObjectPackType(ref TypeObjext).DeserializeObjetct(ObjectData, out vTmp);
-            return vTmp;
+            object vTmp;
+            MemoryStream ms = new MemoryStream(ObjectData);
+            GetObjectPackType(ref TypeObjext).DeserializeObjetct(ref ms, out vTmp);
+            return (IAraObject)vTmp;
         }
     }
 
@@ -76,9 +78,9 @@ namespace Ara2.Session4
 
             List<MemberInfo> TmpMembros = new List<MemberInfo>();
 
-            TmpMembros.AddRange(vType.GetRuntimeProperties().Where(a=> FiltraMemberNaoSerializaveis(a)));
+            TmpMembros.AddRange(vType.GetRuntimeProperties().Where(a => FiltraMemberNaoSerializaveis(a)));
             TmpMembros.AddRange(vType.GetRuntimeFields().Where(a => FiltraMemberNaoSerializaveis(a)));
-            
+
 
             Metodos = TmpMembros.OrderBy(a => a.Name).ToArray();
         }
@@ -86,10 +88,10 @@ namespace Ara2.Session4
 
         private static bool FiltraMemberNaoSerializaveis(PropertyInfo vM)
         {
-            if (vM.CanWrite==false 
-                || vM.CanRead==false 
-                || (vM.GetGetMethod() !=null && vM.GetGetMethod().IsStatic)
-                || vM.PropertyType.IsAssignableFrom(typeof(IAraObject)))
+            if (vM.CanWrite == false
+                || vM.CanRead == false
+                || (vM.GetGetMethod() != null && vM.GetGetMethod().IsStatic)
+                || typeof(IAraObject).IsAssignableFrom(vM.PropertyType))
                 return false;
             else
                 return FiltraMemberNaoSerializaveis((MemberInfo)vM);
@@ -97,7 +99,7 @@ namespace Ara2.Session4
 
         private static bool FiltraMemberNaoSerializaveis(FieldInfo vM)
         {
-            if (vM.IsInitOnly || vM.IsStatic || vM.FieldType.IsAssignableFrom(typeof(IAraObject)))
+            if (vM.IsInitOnly || vM.IsStatic || typeof(IAraObject).IsAssignableFrom(vM.FieldType))
                 return false;
             else
                 return FiltraMemberNaoSerializaveis((MemberInfo)vM);
@@ -105,7 +107,7 @@ namespace Ara2.Session4
 
         private static bool FiltraMemberNaoSerializaveis(MemberInfo vM)
         {
-            if (TemAtributo<NonSerializedAttribute>(vM) 
+            if (TemAtributo<NonSerializedAttribute>(vM)
                 || TemAtributo<JsonIgnoreAttribute>(vM))
                 return false;
 
@@ -118,19 +120,22 @@ namespace Ara2.Session4
         }
 
 
-        public void SerializeObjetct(ref IAraObject vObj,ref StreamWriter sw)
+        public void SerializeObjetct(ref IAraObject vObj, ref MemoryStream sw)
         {
             var vTmpObj = (object)vObj;
             SerializeObjetct(ref vTmpObj, ref sw);
         }
 
-        public void SerializeObjetct(ref object vObj, ref StreamWriter sw)
+        public void SerializeObjetct(ref object vObj, ref MemoryStream sw)
         {
-            if (vObj==null)
+            // Bit Null
+            if (vObj == null)
             {
-                sw.Write(BitConverter.GetBytes((int)0));
+                sw.Write(new byte[] { 1 }, 0, 1);
                 return;
             }
+            else
+                sw.Write(new byte[] { 0 }, 0, 1);
 
             foreach (var vM in Metodos)
             {
@@ -151,14 +156,15 @@ namespace Ara2.Session4
 
                 if (ToByteSuportado(vType))
                 {
-                    byte[] vValue = ToBytes(ref vType,ref vGetValueObj);
+                    byte[] vValue = ToBytes(ref vType, ref vGetValueObj);
                     if (vValue != null && vValue.Length > 0)
                     {
-                        sw.Write(BitConverter.GetBytes(vValue.Length));
-                        sw.Write(vValue);
+                        int vValueL = vValue.Length;
+                        sw.Write(BitConverter.GetBytes(vValueL), 0, 4);
+                        sw.Write(vValue, 0, vValueL);
                     }
                     else
-                        sw.Write(BitConverter.GetBytes((int)0));
+                        sw.Write(BitConverter.GetBytes((int)0), 0, 4);
                 }
                 else
                 {
@@ -194,22 +200,26 @@ namespace Ara2.Session4
             typeof(decimal?   ),
 
             typeof(string   ),
+            typeof(Type)
         };
 
         private static bool ToByteSuportado(Type vObj)
         {
-            if (TypesSuportados.Contains(vObj) || vObj.IsEnum || typeof(IEnumerable).IsAssignableFrom(vObj))
+            if (TypesSuportados.Contains(vObj) || vObj.IsEnum || typeof(IEnumerable).IsAssignableFrom(vObj) || typeof(Type).IsAssignableFrom(vObj))
                 return true;
             else
                 return false;
         }
 
+        static byte[] ByteEmty = new byte[] { 1 };
         private static byte[] ToBytes(ref Type vObjType, ref object vObj)
         {
             if (vObj == null)
                 return null;
 
-            if (vObj is bool || vObj is bool?)
+            if (vObj is string)
+                return ByteCombine(ByteEmty, Encoding.ASCII.GetBytes((string)vObj));
+            else if (vObj is bool || vObj is bool?)
                 return BitConverter.GetBytes((bool)vObj);
             else if (vObj is char || vObj is char?)
                 return BitConverter.GetBytes((char)vObj);
@@ -231,45 +241,284 @@ namespace Ara2.Session4
                 return BitConverter.GetBytes((double)vObj);
             else if (vObj is decimal || vObj is decimal?)
                 return BitconverterExt.GetBytes((decimal)vObj);
-            else if (vObj is string)
-                return Encoding.ASCII.GetBytes((string)vObj);
             else if (vObjType.IsEnum)
                 return BitConverter.GetBytes(Convert.ToInt32(vObj));
             else if (typeof(IEnumerable).IsAssignableFrom(vObjType))
             {
-                using (MemoryStream stream = new MemoryStream())
+                MemoryStream stream = new MemoryStream();
+                
+                try
                 {
-                    StreamWriter sw = new StreamWriter(stream);
-
-
+                    Type vTypeArray = null;
                     ObjectPackType vObjectPackType = null;
+                    bool vToByteSuportado = false;
+                    bool ByteEmptyColocado = false;
 
                     foreach (var vTmp in (IEnumerable)vObj)
                     {
-                        object vTmp2 = (object)vTmp;
-
-                        if (vObjectPackType == null)
+                        if (!ByteEmptyColocado)
                         {
-                            Type vTypeEnum = vTmp2.GetType();
-                            vObjectPackType = SessionThinObject.GetObjectPackType(ref vTypeEnum);
+                            ByteEmptyColocado = true;
+                            stream.WriteByte(0);
                         }
 
-                        vObjectPackType.SerializeObjetct(ref vTmp2, ref sw);
+                        // Bit Null
+                        if (vTmp == null)
+                            stream.Write(new byte[] { 1 }, 0, 1);
+                        else
+                        {
+                            stream.Write(new byte[] { 0 }, 0, 1);
+
+                            if (vTypeArray == null)
+                            {
+                                vTypeArray = ((object)vTmp).GetType();
+                                vToByteSuportado = ToByteSuportado(vTypeArray);
+                            }
+
+                            object vTmp2 = (object)vTmp;
+
+                            if (vToByteSuportado)
+                            {
+                                byte[] vValue = ToBytes(ref vTypeArray, ref vTmp2);
+                                if (vValue != null && vValue.Length > 0)
+                                {
+                                    int vValueL = vValue.Length;
+                                    stream.Write(BitConverter.GetBytes(vValueL), 0, 4);
+                                    stream.Write(vValue, 0, vValueL);
+                                }
+                                else
+                                    stream.Write(BitConverter.GetBytes((int)0), 0, 4);
+                            }
+                            else
+                            {
+                                if (vObjectPackType == null)
+                                {
+                                    vTypeArray = vTmp2.GetType();
+                                    vObjectPackType = SessionThinObject.GetObjectPackType(ref vTypeArray);
+                                }
+
+                                vObjectPackType.SerializeObjetct(ref vTmp2, ref stream);
+                            }
+                        }
                     }
 
-                    sw.Dispose();
-                    sw = null;
+                    if (!ByteEmptyColocado)
+                    {
+                        ByteEmptyColocado = true;
+                        stream.WriteByte(1);
+                    }
 
                     return stream.ToArray();
                 }
+                finally
+                {
+                    stream = null;
+                }
             }
+            else if (vObjType is Type || typeof(Type).IsAssignableFrom(vObjType))
+                return Encoding.ASCII.GetBytes(((Type)vObj).ToString());
             else
                 throw new Exception(string.Format("Tipo '{0}' não suportado pelo ToBytes ", vObj.GetType()));
         }
 
-        public void DeserializeObjetct(byte[] vObjB,out IAraObject vObj)
+        public static byte[] ByteCombine(byte[] first, byte[] second)
         {
-            throw new NotImplementedException();
+            byte[] ret = new byte[first.Length + second.Length];
+            Buffer.BlockCopy(first, 0, ret, 0, first.Length);
+            Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
+            return ret;
+        }
+
+        private static object ToObject(ref Type vObjType, ref byte[] vBytes)
+        {
+            if (vBytes == null)
+                return null;
+
+
+            if (vObjType == typeof(string))
+            {
+                if (vBytes.Length > 1)
+                    return Encoding.ASCII.GetString(vBytes.Skip(1).ToArray());
+                else
+                    return string.Empty;
+            }
+            else if (vObjType == typeof(bool) || vObjType == typeof(bool?))
+                return BitConverter.ToBoolean(vBytes, 0);
+            else if (vObjType == typeof(char) || vObjType == typeof(char?))
+                return BitConverter.ToChar(vBytes, 0);
+            else if (vObjType == typeof(short) || vObjType == typeof(short?))
+                return (short)BitConverter.ToInt16(vBytes, 0);
+            else if (vObjType == typeof(int) || vObjType == typeof(int?))
+                return BitConverter.ToInt32(vBytes, 0);
+            else if (vObjType == typeof(long) || vObjType == typeof(long?))
+                return BitConverter.ToInt64(vBytes, 0);
+            else if (vObjType == typeof(ushort) || vObjType == typeof(ushort?))
+                return BitConverter.ToUInt16(vBytes, 0);
+            else if (vObjType == typeof(uint) || vObjType == typeof(uint?))
+                return BitConverter.ToUInt32(vBytes, 0);
+            else if (vObjType == typeof(ulong) || vObjType == typeof(ulong?))
+                return BitConverter.ToUInt64(vBytes, 0);
+            else if (vObjType == typeof(float) || vObjType == typeof(float?))
+                return BitConverter.ToSingle(vBytes, 0);
+            else if (vObjType == typeof(double) || vObjType == typeof(double?))
+                return BitConverter.ToDouble(vBytes, 0);
+            else if (vObjType == typeof(decimal) || vObjType == typeof(decimal?))
+                return BitconverterExt.ToDecimal(vBytes);
+            else if (vObjType.IsEnum)
+                return Enum.ToObject(vObjType, BitConverter.ToInt32(vBytes, 0));
+            else if (typeof(IEnumerable).IsAssignableFrom(vObjType))
+            {
+
+
+                Type vType = (vObjType.GetGenericArguments().Any() ? vObjType.GetGenericArguments()[0] : vObjType.GetElementType());
+                var listType = Activator.CreateInstance(typeof(List<>).MakeGenericType(vType));
+                var vObjectPackType = SessionThinObject.GetObjectPackType(ref vType);
+                bool vToByteSuportado = ToByteSuportado(vType);
+
+                //foreach (var vTmp in (IEnumerable)vObj)
+                MemoryStream ms = new MemoryStream(vBytes);
+
+                // Byte Empty
+                if (ms.ReadByte() == 0)
+                {
+                    try
+                    {
+                        do
+                        {
+
+                            if (ms.ReadByte() == 0)
+                            {
+                                //var vTmpBs = vBytes.Skip(PRead).ToArray();
+                                object vObj;
+                                if (vToByteSuportado)
+                                {
+                                    byte[] bufferLen = new byte[4];
+                                    ms.Read(bufferLen, 0, 4);
+                                    int Len = BitConverter.ToInt32(bufferLen, 0);
+
+                                    if (Len > 0)
+                                    {
+                                        byte[] vObjBSub = new byte[Len]; //.Skip(PosR).Take(Len).ToArray();
+                                        ms.Read(vObjBSub, 0, Len);
+
+                                        vObj = ToObject(ref vType, ref vObjBSub);
+                                    }
+                                    else
+                                        vObj = null;
+                                }
+                                else
+                                    vObjectPackType.DeserializeObjetct(ref ms, out vObj);
+
+                                ((IList)listType).Add(vObj);
+                            }
+                            else
+                                ((IList)listType).Add(null);
+                        } while (ms.Position < vBytes.Length);
+                    }
+                    finally
+                    {
+                        ms = null;
+                    }
+
+                }
+
+                if (vObjType.IsArray)
+                {
+                    //return listType.GetType().GetMethod("ToArray").Invoke(listType, null);
+                    return ((dynamic)listType).ToArray();
+                }
+                else
+                    return Convert.ChangeType(listType, vObjType);
+            }
+            else if (vObjType is Type || typeof(Type).IsAssignableFrom(vObjType))
+                return Type.GetType(Encoding.ASCII.GetString(vBytes));
+            else
+                throw new Exception(string.Format("Tipo '{0}' não suportado pelo ToBytes ", vObjType));
+        }
+
+        //public int DeserializeObjetct(byte[] vObjB,out IAraObject vObj)
+        //{
+        //    return DeserializeObjetct(vObjB,out vObj);
+        //}
+        static byte[] ArrayByteNUll = null;
+
+        public void DeserializeObjetct(ref MemoryStream vObjB, out object vObj)
+        {
+            int Len;
+            vObj = null;
+
+            // Verifica Bit NUll
+            if (vObjB.ReadByte() == 1)
+                return;
+
+            // Tenho que acrecentar um byte para saber se o objeto é null
+            vObj = Activator.CreateInstance(PackType, true);
+
+
+            foreach (var vM in Metodos)
+            {
+                Type vType;
+                if (vM is PropertyInfo)
+                {
+                    vType = ((PropertyInfo)vM).PropertyType;
+                    object vTmpO;
+                    if (ToByteSuportado(vType))
+                    {
+                        byte[] bufferLen = new byte[4];
+                        vObjB.Read(bufferLen, 0, 4);
+                        Len = BitConverter.ToInt32(bufferLen, 0);
+
+                        if (Len > 0)
+                        {
+                            byte[] vObjBSub = new byte[Len]; //.Skip(PosR).Take(Len).ToArray();
+                            vObjB.Read(vObjBSub, 0, Len);
+
+                            vTmpO = ToObject(ref vType, ref vObjBSub);
+                        }
+                        else
+                            vTmpO = ToObject(ref vType, ref ArrayByteNUll);
+                    }
+                    else
+                    {
+                        //byte[] vObjBSub  = new byte[ //= vObjB.Skip(PosR).ToArray();
+                        SessionThinObject.GetObjectPackType(ref vType).DeserializeObjetct(ref vObjB, out vTmpO);
+                    }
+
+                    ((PropertyInfo)vM).SetValue(vObj, vTmpO);
+                }
+                else if (vM is FieldInfo)
+                {
+                    vType = ((FieldInfo)vM).FieldType;
+                    object vTmpO;
+                    if (ToByteSuportado(vType))
+                    {
+                        //Len = BitConverter.ToInt32(vObjB, PosR);
+                        byte[] bufferLen = new byte[4];
+                        vObjB.Read(bufferLen, 0, 4);
+                        Len = BitConverter.ToInt32(bufferLen, 0);
+
+                        if (Len > 0)
+                        {
+                            //byte[] vObjBSub = vObjB.Skip(PosR).Take(Len).ToArray();
+                            byte[] vObjBSub = new byte[Len]; //.Skip(PosR).Take(Len).ToArray();
+                            vObjB.Read(vObjBSub, 0, Len);
+
+                            vTmpO = ToObject(ref vType, ref vObjBSub);
+                        }
+                        else
+                            vTmpO = ToObject(ref vType, ref ArrayByteNUll);
+                    }
+                    else
+                    {
+                        //byte[] vObjBSub = vObjB.Skip(PosR).ToArray();
+                        SessionThinObject.GetObjectPackType(ref vType).DeserializeObjetct(ref vObjB, out vTmpO);
+                    }
+
+                    ((FieldInfo)vM).SetValue(vObj, vTmpO);
+                }
+                else
+                    throw new Exception(string.Format("Metodo '{0}' inesperado, não é PropertyInfo e FieldInfo", vM.Name));
+            }
         }
 
     }
